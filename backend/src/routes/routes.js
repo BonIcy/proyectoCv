@@ -8,6 +8,7 @@ const getData = require('../controllers/get');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
+const { hiringCamper } = require('../controllers/hiring');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -70,4 +71,16 @@ router.put('/upd/:collectionName/:itemId', async (req, res) => {
       res.status(500).json({ error: `Error al actualizar el elemento de ${collectionName}` });
     }
   });
+
+  router.put('/hiring/:collectionName/:itemId', async (req, res) => {
+    const { collectionName, itemId } = req.params;
+
+    try {
+        const result = await hiringCamper(collectionName, itemId);
+        res.json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: `Error al actualizar el elemento de ${collectionName}` });
+    }
+});
 module.exports = router;
