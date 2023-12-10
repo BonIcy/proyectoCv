@@ -8,6 +8,7 @@ const getData = require('../controllers/get');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
+const getInfoCampers = require('../controllers/InfoCampers.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -71,3 +72,15 @@ router.put('/upd/:collectionName/:itemId', async (req, res) => {
     }
   });
 module.exports = router;
+
+//InfoCamper
+
+router.get('/Info/Campers', async (req, res) => {
+  try {
+    const result = await getInfoCampers();
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al obtener la data`, message: error  });
+  }
+});
