@@ -30,5 +30,4 @@ async function startServer() {
   }
 }
 
-// Iniciar el servidor
 startServer();
