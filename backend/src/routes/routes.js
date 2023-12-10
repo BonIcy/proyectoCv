@@ -3,6 +3,7 @@ const express = require('express');
 require('dotenv').config();
 const router = express.Router();
 const { MongoClient } = require('mongodb');
+const errorcontroller  = require('../middleware/errorsMongodb.js');
 const getData = require('../controllers/get');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
@@ -39,7 +40,7 @@ router.post('/add/:collectionName', async (req, res) => {
       res.status(201).json({result,data});
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: `Error al postear un elemento a ${collectionName}` });
+      errorcontroller(error, res);
     }
   });
   
