@@ -2,7 +2,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const uri = process.env.DDBB256;
-const nombreBase = 'proyectoCv';
+const nombreBase = 'proyectCv';
 
 async function updateData(collectionName, itemId, newData) {
   const client = new MongoClient(uri);

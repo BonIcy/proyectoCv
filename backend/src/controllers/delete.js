@@ -2,7 +2,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const uri = process.env.DDBB256;
-const nombreBase = 'proyectoCv';
+const nombreBase = 'proyectCv';
 
 async function deleteData(collectionName, itemId) {
   const client = new MongoClient(uri);

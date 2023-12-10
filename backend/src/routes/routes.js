@@ -8,7 +8,7 @@ const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
 const uri = process.env.DDBB256;
-const nombreBase = 'proyectoCv';
+const nombreBase = 'proyectCv';
 
 router.get('/test', async (req, res) => {
     try {
