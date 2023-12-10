@@ -6,6 +6,7 @@ const { MongoClient } = require('mongodb');
 const errorcontroller  = require('../middleware/errorsMongodb.js');
 const getData = require('../controllers/get');
 const getInfoCampers = require('../controllers/InfoCampers.js');
+const getWorkersOrNot = require('../controllers/workers.js');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
@@ -87,7 +88,6 @@ router.put('/hiring/:collectionName/:itemId', async (req, res) => {
         res.status(500).json({ error: `Error al actualizar el elemento de ${collectionName}` });
     }
 });
-module.exports = router;
 
 //InfoCamper
 
@@ -100,3 +100,21 @@ router.get('/Info/Campers', async (req, res) => {
     res.status(500).json({ error: `Error al obtener la data`, message: error  });
   }
 });
+
+//workers
+
+router.get('/Campers/WorkOrNot/:state', async (req, res) => {
+  const {state} = req.params;
+  const booleano = state.toLowerCase() === "true";
+  try {
+      const result = await getWorkersOrNot(booleano);
+      res.json(result);
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: `Error al consultar el elemento Camper` });
+  }
+});
+
+module.exports = router;
+
+
