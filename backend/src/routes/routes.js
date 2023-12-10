@@ -5,6 +5,7 @@ const router = express.Router();
 const { MongoClient } = require('mongodb');
 const errorcontroller  = require('../middleware/errorsMongodb.js');
 const getData = require('../controllers/get');
+const getInfoCampers = require('../controllers/InfoCampers.js');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
@@ -72,7 +73,10 @@ router.put('/upd/:collectionName/:itemId', async (req, res) => {
     }
   });
 
-  router.put('/hiring/:collectionName/:itemId', async (req, res) => {
+  
+//hiring
+
+router.put('/hiring/:collectionName/:itemId', async (req, res) => {
     const { collectionName, itemId } = req.params;
 
     try {
@@ -84,3 +88,15 @@ router.put('/upd/:collectionName/:itemId', async (req, res) => {
     }
 });
 module.exports = router;
+
+//InfoCamper
+
+router.get('/Info/Campers', async (req, res) => {
+  try {
+    const result = await getInfoCampers();
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al obtener la data`, message: error  });
+  }
+});
