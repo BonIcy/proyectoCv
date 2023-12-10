@@ -6,6 +6,8 @@ const { MongoClient } = require('mongodb');
 const errorcontroller  = require('../middleware/errorsMongodb.js');
 const getData = require('../controllers/get');
 const getInfoCampers = require('../controllers/InfoCampers.js');
+const getUserInfo = require('../controllers/InfoUser.js');
+
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
@@ -87,7 +89,6 @@ router.put('/hiring/:collectionName/:itemId', async (req, res) => {
         res.status(500).json({ error: `Error al actualizar el elemento de ${collectionName}` });
     }
 });
-module.exports = router;
 
 //InfoCamper
 
@@ -100,3 +101,17 @@ router.get('/Info/Campers', async (req, res) => {
     res.status(500).json({ error: `Error al obtener la data`, message: error  });
   }
 });
+
+// info user
+
+router.get('/Info/Users', async (req, res) => {
+    try {
+        const result = await getUserInfo();
+        res.json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: `error al obtener los datos `, message: error });
+    }
+});
+
+module.exports = router;
