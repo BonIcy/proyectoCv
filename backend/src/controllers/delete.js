@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const uri = process.env.DDBB256;
@@ -11,16 +11,14 @@ async function deleteData(collectionName, itemId) {
     await client.connect();
     const db = client.db(nombreBase);
     const collection = db.collection(collectionName);
-    const result = await collection.findOneAndDelete({ _id: new ObjectId(itemId) });
+    const numericItemId = parseInt(itemId);
+    const result = await collection.findOneAndDelete({ _id: numericItemId });
 
-    if (result.value) {
+    if (!result.value) {
       return { message: `Elemento con ID ${itemId} no encontrado en ${collectionName}` };
+    } else {
+      return { message: `Elemento con ID ${itemId} eliminado correctamente` };
     }
-    else{
-      return {message: `Elemento con ID ${itemId} eliminado correctamente`}
-    }
-
-    return result.value;
   } catch (error) {
     console.error(error.message);
     throw error;
@@ -28,6 +26,7 @@ async function deleteData(collectionName, itemId) {
     client.close();
   }
 }
+
 module.exports = {
   deleteData
 };
