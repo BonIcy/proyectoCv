@@ -1,0 +1,413 @@
+
+//🪓🔎Injection of documents for Document_Type  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+}   
+db.Document_Type.insertMany([
+    {
+        _id: Number(increment("Document_Type")),
+        Name: "Identity Document",
+        Abbreviation: "ID"
+    },
+    {
+        _id: Number(increment("Document_Type")),
+        Name: "Passport",
+        Abbreviation: "PP"
+    },
+    {
+        _id: Number(increment("Document_Type")),
+        Name: "Driver's License",
+        Abbreviation: "DL"
+    },
+]);
+
+//🪓🔎Injection of documents for Gender  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+}   
+db.Gender.insertMany([
+    {
+        _id: Number(increment("Gender")),
+        Name: "Male",
+        Abbreviation: "M"
+    },
+    {
+        _id: Number(increment("Gender")),
+        Name: "Female",
+        Abbreviation: "F"
+    },
+    {
+        _id: Number(increment("Gender")),
+        Name: "Non-Binary",
+        Abbreviation: "NB"
+    }
+]);
+
+//🪓🔎Injection of documents for English_Levels  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+}  
+db.English_Levels.insertMany([
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "A1",
+        E_Description: "Beginner - Can understand and use familiar everyday expressions and very basic phrases aimed at the satisfaction of needs of a concrete type."
+    },
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "A2",
+        E_Description: "Elementary - Can understand sentences and frequently used expressions related to areas of most immediate relevance."
+    },
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "B1",
+        E_Description: "Intermediate - Can understand the main points of clear standard input on familiar matters regularly encountered in work, school, leisure, etc."
+    },
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "B2",
+        E_Description: "Upper Intermediate - Can understand the main ideas of complex text on both concrete and abstract topics."
+    },
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "C1",
+        E_Description: "Advanced - Can understand a wide range of demanding, longer texts, and recognize implicit meaning."
+    },
+    {
+        _id: Number(increment("English_Levels")),
+        E_Name: "C2",
+        E_Description: "Proficient - Can understand with ease virtually everything heard or read."
+    }
+]);
+
+
+//🪓🔎Injection of documents for Skills  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+} 
+db.Skills.insertMany([
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "JavaScript",
+        S_Description: "High-level, interpreted programming language widely used for web development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Python",
+        S_Description: "High-level, general-purpose programming language known for its readability and versatility."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Java",
+        S_Description: "Object-oriented, class-based programming language commonly used for enterprise applications."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "C#",
+        S_Description: "Multi-paradigm programming language developed by Microsoft for building Windows applications."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "C++",
+        S_Description: "General-purpose programming language with object-oriented features, often used for systems/software development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Ruby",
+        S_Description: "Dynamic, object-oriented programming language, often used for web development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "PHP",
+        S_Description: "Server-side scripting language widely used for web development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Swift",
+        S_Description: "Programming language developed by Apple for iOS, macOS, watchOS, and tvOS development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Kotlin",
+        S_Description: "Concise, expressive programming language designed to be fully interoperable with Java."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "React",
+        S_Description: "JavaScript library for building user interfaces, maintained by Facebook."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Angular",
+        S_Description: "Front-end web application framework, developed and maintained by Google."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Vue.js",
+        S_Description: "JavaScript framework for building user interfaces, known for its simplicity and flexibility."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Node.js",
+        S_Description: "JavaScript runtime built on the V8 JavaScript engine for server-side development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Ruby on Rails",
+        S_Description: "Full-stack web application framework written in Ruby."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Django",
+        S_Description: "High-level Python web framework that encourages rapid development and clean, pragmatic design."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Spring Boot",
+        S_Description: "Java-based framework for building enterprise-level applications."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Laravel",
+        S_Description: "PHP web framework for web application development."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Express.js",
+        S_Description: "Minimal and flexible Node.js web application framework."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Flask",
+        S_Description: "Lightweight Python web framework."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "ASP.NET",
+        S_Description: "Web framework for building modern, cloud-based, and internet-connected applications."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "React Native",
+        S_Description: "Framework for building mobile applications using React."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Flutter",
+        S_Description: "UI toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "jQuery",
+        S_Description: "Fast, small, and feature-rich JavaScript library."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Dart",
+        S_Description: "Programming language optimized for building mobile, desktop, server, and web applications."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Golang",
+        S_Description: "Open-source programming language that makes it easy to build simple, reliable, and efficient software."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "RubyMotion",
+        S_Description: "Toolchain for writing cross-platform native apps in Ruby."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "Elixir",
+        S_Description: "Functional, concurrent, general-purpose programming language that runs on the Erlang virtual machine."
+    },
+    {
+        _id: Number(increment("Skills")),
+        S_Name: "TypeScript",
+        S_Description: "Superset of JavaScript that adds optional static types."
+    }
+]);
+
+
+//🪓🔎Injection of documents for User  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+} 
+db.User.insertMany([
+    {
+        _id: Number(increment("User")),
+        Username: "admin-user",
+        Role: "Admin",
+        Email: "admin@example.com",
+        Password: "dfg345",
+        CreatedAt: new Date()
+    },
+    {
+        _id: Number(increment("User")),
+        Username: "empresa-user1",
+        Role: "Company",
+        Email: "empresa1@example.com",
+        Password: "dsfdfsg234fc", 
+        CreatedAt: new Date()
+    },
+    {
+        _id: Number(increment("User")),
+        Username: "empresa-user2",
+        Role: "Company",
+        Email: "empresa2@example.com",
+        Password: "213dfvdfds", 
+        CreatedAt: new Date()
+    }
+]);
+
+
+//🪓🔎Injection of documents for User  collection 🔎🪓
+
+use("proyectCv");
+function increment(collection) {
+    const sequenceDocument = db.autoincrement.findOneAndUpdate(
+        { _id: `${collection}Id` },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after" }
+    );
+    return sequenceDocument.sequence_value;
+} 
+db.Campers.insertMany([
+    {
+        _id: Number(increment("Campers")),
+        Name: "Alice",
+        LastName: "Johnson",
+        Email: "alice.johnson@example.com",
+        Phone: "+12 3456789",
+        identification: 987654321,
+        Location: "City A, Country A",
+        Salary: 60000,
+        EnglishLevel: 4,
+        Skills: [1, 3, 5], 
+        Biography: "I am a dedicated full-stack developer with expertise in...",
+        Stacks: ["JavaScript", "React", "Node.js"],
+        Gender: 2,
+        TypeDocument: 1,
+        Working: false
+    },
+    {
+        _id: Number(increment("Campers")),
+        Name: "Bob",
+        LastName: "Smith",
+        Email: "bob.smith@example.com",
+        Phone: "+9 87654321",
+        identification: 123456789,
+        Location: "City B, Country B",
+        Salary: 55000,
+        EnglishLevel: 3,
+        Skills: [2, 4, 6], 
+        Biography: "Experienced back-end developer with a passion for creating robust...",
+        Stacks: ["Java", "Spring Boot", "MySQL"],
+        Gender: 1, 
+        TypeDocument: 2,
+        Working: false
+    },
+    {
+        _id: Number(increment("Campers")),
+        Name: "Eva",
+        LastName: "Williams",
+        Email: "eva.williams@example.com",
+        Phone: "+55 5123456",
+        identification: 456789123,
+        Location: "City C, Country C",
+        Salary: 70000,
+        EnglishLevel: 5,
+        Skills: [1, 2, 3], 
+        Biography: "Front-end developer specializing in creating visually appealing...",
+        Stacks: ["HTML", "CSS", "JavaScript"],
+        Gender: 2, 
+        TypeDocument: 1, 
+        Working: false
+    },
+    {
+        _id: Number(increment("Campers")),
+        Name: "Charlie",
+        LastName: "Miller",
+        Email: "charlie.miller@example.com",
+        Phone: "+99 9888777",
+        identification: 789123456,
+        Location: "City D, Country D",
+        Salary: 75000,
+        EnglishLevel: 4,
+        Skills: [4, 5, 6], 
+        Biography: "AI and machine learning enthusiast with a focus on...",
+        Stacks: ["Python", "TensorFlow", "Scikit-learn"],
+        Gender: 1, 
+        TypeDocument: 2,
+        Working: true
+    },
+    {
+        _id: Number(increment("Campers")),
+        Name: "Grace",
+        LastName: "Moore",
+        Email: "grace.moore@example.com",
+        Phone: "+11 1222333",
+        identification: 321654987,
+        Location: "City E, Country E",
+        Salary: 65000,
+        EnglishLevel: 3,
+        Skills: [1, 4, 6], 
+        Biography: "Creative UX/UI designer with a passion for delivering...",
+        Stacks: ["Adobe XD", "Sketch", "Figma"],
+        Gender: 2, 
+        TypeDocument: 1, 
+        Working: false
+    },
+    {
+        _id: Number(increment("Campers")),
+        Name: "David",
+        LastName: "Jones",
+        Email: "david.jones@example.com",
+        Phone: "+77 7666555",
+        identification: 654987321,
+        Location: "City F, Country F",
+        Salary: 80000,
+        EnglishLevel: 5,
+        Skills: [2, 5, 3], 
+        Biography: "Experienced database administrator specializing in...",
+        Stacks: ["MongoDB", "SQL Server", "Redis"],
+        Gender: 1, 
+        TypeDocument: 2, 
+        Working: false
+    }
+]);

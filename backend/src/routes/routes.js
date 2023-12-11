@@ -3,12 +3,14 @@ const express = require('express');
 require('dotenv').config();
 const router = express.Router();
 const { MongoClient } = require('mongodb');
+const errorcontroller  = require('../middleware/errorsMongodb.js');
 const getData = require('../controllers/get');
 const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
+const getInfoCampers = require('../controllers/InfoCampers.js');
 const uri = process.env.DDBB256;
-const nombreBase = 'proyectoCv';
+const nombreBase = 'proyectCv';
 
 router.get('/test', async (req, res) => {
     try {
@@ -39,7 +41,7 @@ router.post('/add/:collectionName', async (req, res) => {
       res.status(201).json({result,data});
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: `Error al postear un elemento a ${collectionName}` });
+      errorcontroller(error, res);
     }
   });
   
@@ -70,3 +72,15 @@ router.put('/upd/:collectionName/:itemId', async (req, res) => {
     }
   });
 module.exports = router;
+
+//InfoCamper
+
+router.get('/Info/Campers', async (req, res) => {
+  try {
+    const result = await getInfoCampers();
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al obtener la data`, message: error  });
+  }
+});

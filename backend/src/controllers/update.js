@@ -1,8 +1,8 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const uri = process.env.DDBB256;
-const nombreBase = 'proyectoCv';
+const nombreBase = 'proyectCv';
 
 async function updateData(collectionName, itemId, newData) {
   const client = new MongoClient(uri);
@@ -11,9 +11,9 @@ async function updateData(collectionName, itemId, newData) {
     await client.connect();
     const db = client.db(nombreBase);
     const collection = db.collection(collectionName);
-    const filter = { _id: new ObjectId(itemId) };
-    const update = { $set: newData };
-    const result = await collection.updateOne(filter, update);
+    const numericItemId = parseInt(itemId);
+    const result = await collection.updateOne({ _id: numericItemId }, { $set: newData });
+
     if (result.matchedCount === 0) {
       throw new Error(`Elemento con ID ${itemId} no encontrado en ${collectionName}`);
     }
