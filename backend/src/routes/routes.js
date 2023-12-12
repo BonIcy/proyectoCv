@@ -1,5 +1,6 @@
 
 const express = require('express');
+const fileUpload = require('express-fileupload');
 require('dotenv').config();
 const router = express.Router();
 const { MongoClient } = require('mongodb');
@@ -13,9 +14,11 @@ const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
 const { hiringCamper } = require('../controllers/hiring');
 const { UniversalSearchEngine } = require('../controllers/universalSearchEngine.js');
+const { updateCVs } = require('../controllers/updateCVs.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
+router.use(fileUpload());
 router.get('/test', async (req, res) => {
     try {
         console.log('testeando');
@@ -143,6 +146,23 @@ router.post('/Campers/SearchEngine', async (req, res) => {
       res.status(500).json({ error: `Error al consultar el elemento Camper` });
   }
 });
+
+//updateCV
+router.put('/updateCVs/:camperId', async (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send({status: 400, message: `Archive dont found`});
+  }
+  const { camperId } = req.params;
+  const CV = req.files.pdf;
+  try {
+    const result = await updateCVs(camperId, CV);
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al actualizar la CV del camper identificado con el id ${camperId}` });
+  }
+});
+
 
 module.exports = router;
 
