@@ -12,6 +12,7 @@ const {postData} = require('../controllers/post');
 const {deleteData} = require('../controllers/delete');
 const {updateData} = require('../controllers/update');
 const { hiringCamper } = require('../controllers/hiring');
+const { UniversalSearchEngine } = require('../controllers/universalSearchEngine.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -122,6 +123,20 @@ router.get('/Campers/WorkOrNot/:state', async (req, res) => {
   const booleano = state.toLowerCase() === "true";
   try {
       const result = await getWorkersOrNot(booleano);
+      res.json(result);
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: `Error al consultar el elemento Camper` });
+  }
+});
+
+//UniversalSearchEngine
+
+router.post('/Campers/SearchEngine', async (req, res) => {
+  const filter = req.body;
+  console.log(filter);
+  try {
+      const result = await UniversalSearchEngine(filter);
       res.json(result);
   } catch (error) {
       console.error(error.message);
