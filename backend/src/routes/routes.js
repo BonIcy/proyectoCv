@@ -17,6 +17,7 @@ const { hiringCamper } = require('../controllers/hiring');
 const { UniversalSearchEngine } = require('../controllers/universalSearchEngine.js');
 const { updateCVs } = require('../controllers/updateCVs.js');
 const { postCamper } = require('../controllers/postCamper.js');
+const { deleteCamper } = require('../controllers/deleteCamper.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -193,4 +194,14 @@ router.post('/newCamper/add', async (req, res) => {
 });
 module.exports = router;
 
-
+//!delete
+router.delete('/newCamper/del/:itemId', async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const result = await deleteCamper(itemId);
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al deletear el camper`, message: error.message });
+  }
+});
