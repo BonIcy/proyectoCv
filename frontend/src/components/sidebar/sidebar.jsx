@@ -4,7 +4,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Link } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';  
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../sidebar/sidebar.css';
+
 
 const Sidebar = () => {
   const [show, setShow] = useState(false);
