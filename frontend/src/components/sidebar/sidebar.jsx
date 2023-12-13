@@ -9,29 +9,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Sidebar = () => {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const closeSidebar = () => setShow(false);
+  const showSidebar = () => setShow(true);
 
   return (
     <>
-      <Button variant="secondary" onClick={handleShow}>
+      <Button variant="secondary" onClick={showSidebar}>
         <FaBars />
       </Button>
 
-      <Offcanvas show={show} onHide={handleClose}>
+      <Offcanvas show={show} onHide={closeSidebar}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Uwu</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <hr />
           <div>
-            <Link to="/managmentCampers" onClick={handleClose}>
+            <Link to="/managmentCampers" onClick={closeSidebar}>
               Management Campers
             </Link>
           </div>
           <div>
-            <Link to="/campers" onClick={handleClose}>
+            <Link to="/campers" onClick={closeSidebar}>
               Campers
+            </Link>
+          </div>
+          <div>
+            <Link to="/administration" onClick={closeSidebar}>
+              Administration
             </Link>
           </div>
         </Offcanvas.Body>
