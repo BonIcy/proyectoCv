@@ -20,12 +20,12 @@ const Campers = () => {
       });
   }, [showWorking]);
 
-  const openDetailsModal = (camper) => {
+  const openModal = (camper) => {
     setSelectedCamper(camper);
     setShowModal(true);
   };
 
-  const closeDetailsModal = () => {
+  const closeModal = () => {
     setShowModal(false);
     setSelectedCamper(null);
   };
@@ -39,13 +39,13 @@ const Campers = () => {
           <p>Salary: {camper.Salary}</p>
           <p>English Level: {camper.EnglishLevel}</p>
           <p>Skills: {camper.Skills.join(', ')}</p>
-          <Button onClick={() => openDetailsModal(camper)}>
+          <Button onClick={() => openModal(camper)}>
             See Details
           </Button>
         </div>
       ))}
 
-      <CamperModal show={showModal} onHide={closeDetailsModal} camper={selectedCamper} />
+      <CamperModal show={showModal} onHide={closeModal} camper={selectedCamper} />
     </div>
   );
 };
