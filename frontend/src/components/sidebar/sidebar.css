@@ -1,0 +1,116 @@
+
+  
+  /* Estilos base para pantallas grandes */
+  .sidebar {
+    width: 90px;
+    background-color: #000000;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Estilos para pantallas medianas */
+  
+  .nav{
+    width: 30px;
+  }
+  
+  .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; 
+  }
+  
+  .salir {
+    padding: 12px;
+    text-align: center;
+    background-color: #000000;
+  }
+  
+  
+  .sidebar a {
+    padding: 12px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    text-align: center;
+  }
+  
+  .sidebar a:hover {
+    background-color: #555;
+  }
+  
+  /* Active/current link */
+  .sidebar a.active {
+    background-color: #d7d7d7;
+    color: white;
+  }
+  
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color: #d7d7d7;
+    color: white;
+  }
+  
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+  div.content {
+    margin-left: 100px;
+    padding: 1px 16px;
+  }
+  
+  /* Estilos para pantallas pequeñas (como teléfonos) */
+  @media (max-width: 180px) {
+    .sidebar {
+      width: 100%;
+      position: static;
+    }
+    div.content {
+      margin-left: 0px;
+    };
+  }
+
+  /* Añadido por sherman */
+
+  .menuHamburguesa{
+    width: 30px;
+  }
+
+  .logoNav{
+    width: 30px;
+    margin-right: 1rem;
+  }
+
+  .divSidebarEventosD , .divSidebarEventosF , .divSidebarRegalo , .divSidebarEmpleados, .divSidebarLogout{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+    padding: .4rem;
+  }
+
+  .divSidebarPerfil{
+    display: flex;
+    margin-top: 5rem;
+  }
+
+  .divSidebarEventosD img , .divSidebarEventosF img, .divSidebarRegalo img, .divSidebarEmpleados img , .divSidebarPerfil img, .divSidebarLogout img{
+    width: 40px;
+  }
+
+  .divSidebarEventosD p , .divSidebarEventosF p , .divSidebarRegalo p, .divSidebarEmpleados p , .divSidebarPerfil p , .divSidebarLogout p{
+    margin: auto;
+  }
+  
+  .divSidebarEventosD:hover , .divSidebarEventosF:hover , .divSidebarRegalo:hover , .divSidebarEmpleados:hover , .divSidebarLogout:hover , 
+  .divSidebarPerfil:hover{
+    cursor: pointer;
+    background-color: rgb(143, 164, 77);
+    border-radius: 4px;
+  }
+
+  .usuarioEmpleadoDiv{
+    margin-top: 9rem;
+  }
