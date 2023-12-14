@@ -46,4 +46,20 @@ async function  decrease(coleccion){
     }
 }
 
-module.exports = {increment, decrease};
+async function  incrementWithSession(coleccion, session, db){
+  
+    try {
+        const autoincrement = db.collection('autoincrement');
+        const sequenceDocument = await autoincrement.findOneAndUpdate(
+            { _id: `${coleccion}Id` },
+            { $inc: { sequence_value: 1 } },
+            { returnDocument: 'after', session }
+        );
+        return sequenceDocument.sequence_value;
+    } catch (error) {
+        console.error(error.message);
+        throw error;
+    }
+}
+  
+module.exports = {increment, decrease, incrementWithSession};

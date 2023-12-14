@@ -5,6 +5,7 @@ require('dotenv').config();
 const router = express.Router();
 const { MongoClient } = require('mongodb');
 const errorcontroller  = require('../middleware/errorsMongodb.js');
+const {handleMongoValidationError}  = require('../middleware/validateMongoErrors.js');
 const getData = require('../controllers/get');
 const getInfoCampers = require('../controllers/InfoCampers.js');
 const getUserInfo = require('../controllers/InfoUser.js');
@@ -15,6 +16,9 @@ const {updateData} = require('../controllers/update');
 const { hiringCamper } = require('../controllers/hiring');
 const { UniversalSearchEngine } = require('../controllers/universalSearchEngine.js');
 const { updateCVs } = require('../controllers/updateCVs.js');
+const { postCamper } = require('../controllers/postCamper.js');
+const { putCamper } = require('../controllers/updateCamper.js');
+const { deleteCamper } = require('../controllers/deleteCamper.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -163,7 +167,71 @@ router.put('/updateCVs/:camperId', async (req, res) => {
   }
 });
 
+//PostCampers
+router.post('/newCamper/add', async (req, res) => {
 
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send({status: 400, message: `Archive dont found`});
+  }
+
+  const CV = req.files.pdf;
+  const data = req.body;
+  const camperData = { ...data };
+  delete camperData.Github;
+  delete camperData.LinkedIn;
+  delete camperData.PresentationVideo;
+  const socialData = {
+    Github: data.Github,
+    LinkedIn: data.LinkedIn,
+    DriveVideo: data.PresentationVideo || (data.PresentationVideo === '' ? 'https://www.youtube.com/watch?v=8l31wVP6C2M&t=85s' : data.PresentationVideo)
+  }
+
+  try {
+    const result = await postCamper(camperData, CV, socialData);
+    res.status(201).json(result);
+  } catch (error) {
+    handleMongoValidationError(error, res);
+  }
+});
 module.exports = router;
 
+//deleteCamper
+router.delete('/newCamper/del/:itemId', async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const result = await deleteCamper(itemId);
+    res.json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: `Error al deletear el camper`, message: error.message });
+  }
+});
 
+//PutCampers
+router.put('/newCamper/upd/:itemId', async (req, res) => {
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send({status: 400, message: `Archive dont found`});
+  }
+
+  const { itemId } = req.params;
+  const CV = req.files.pdf;
+  const data = req.body;
+  const camperData = { ...data };
+  delete camperData.Github;
+  delete camperData.LinkedIn;
+  delete camperData.PresentationVideo;
+  const socialData = {
+    Github: data.Github,
+    LinkedIn: data.LinkedIn,
+    DriveVideo: data.PresentationVideo || (data.PresentationVideo === '' ? 'https://www.youtube.com/watch?v=8l31wVP6C2M&t=85s' : data.PresentationVideo)
+  }
+
+  try {
+    const result = await putCamper(camperData, CV, socialData, itemId);
+    res.status(201).json(result);
+  } catch (error) {
+    handleMongoValidationError(error, res);
+  }
+});
+module.exports = router;

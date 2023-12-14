@@ -348,6 +348,11 @@ db.createCollection("Campers", {
      validationLevel: "strict"
 });
 
+//indexes to avoid repeated identification and Email.
+use("proyectCv");
+db.Campers.createIndex({ identification: 1 }, { unique: true });
+db.Campers.createIndex({ Email: 1 }, { unique: true });
+
 //🚧⛩️ Creation of the CVs collection ⛩️🚧
 
 use("proyectCv");
