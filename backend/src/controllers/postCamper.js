@@ -18,7 +18,7 @@ async function postCamper(camperData, CV, socialData) {
 
       convertData(camperData);
       const idC = await incrementWithSession('Campers', session, db);
-      camperData = { ...camperData, _id: idC, Working: true };
+      camperData = { ...camperData, _id: idC, Working: false };
       await validateAndCreate('Campers', db, camperData, session);
 
       const idCv = await incrementWithSession('CVs', session, db);
@@ -30,7 +30,7 @@ async function postCamper(camperData, CV, socialData) {
       await validateAndCreate('Social_Network', db, socialData, session);
 
       await session.commitTransaction();
-      const result = { status: 201, message: `Camper identificado con el Id ${idC} se a creado correctamente` };
+      const result = { status: 201, message: `Camper identificado con el Id ${idC} se ha creado correctamente` };
       return result;
 
     } catch (error) {
