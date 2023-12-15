@@ -19,6 +19,8 @@ const { updateCVs } = require('../controllers/updateCVs.js');
 const { postCamper } = require('../controllers/postCamper.js');
 const { putCamper } = require('../controllers/updateCamper.js');
 const { deleteCamper } = require('../controllers/deleteCamper.js');
+//loginSystem
+const { SignUp } = require('../controllers/logIn/signUp.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -193,7 +195,6 @@ router.post('/newCamper/add', async (req, res) => {
     handleMongoValidationError(error, res);
   }
 });
-module.exports = router;
 
 //deleteCamper
 router.delete('/newCamper/del/:itemId', async (req, res) => {
@@ -232,6 +233,29 @@ router.put('/newCamper/upd/:itemId', async (req, res) => {
     res.status(201).json(result);
   } catch (error) {
     handleMongoValidationError(error, res);
+  }
+});
+
+//SignUp
+router.post('/SignUp/Create', async (req, res) => {
+  try {
+    let data = req.body;
+    data = { ...data, CreatedAt: new Date() };
+    let userData = (({ Username, Email, Role, Password, CreatedAt }) => ({ Username, Email, Role, Password, CreatedAt }))(data);
+    let companyData = (({ Company, Address, Phone, Country, City, Description, legalRep_Name, legalRep_identificationNumber, CreatedAt }) => ({
+      Company,
+      Address,
+      Phone,
+      Country,
+      City,
+      Description,
+      legalRep_Name,
+      legalRep_identificationNumber,
+    }))(data);
+    const result = await SignUp(userData, companyData);
+      res.json(result);
+  } catch (error) {
+      handleMongoValidationError(error, res);
   }
 });
 module.exports = router;
