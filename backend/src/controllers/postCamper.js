@@ -58,11 +58,12 @@ async function convertData(camperData){
     }
   };
   const numericFields = ['Salary', 'EnglishLevel', 'Gender', 'TypeDocument', 'identification'];
-  const arrayFields = ['Skills', 'Stacks'];
 
+  camperData['Stacks'] = convertToArray('Stacks');
+  camperData['Skills'] = camperData['Skills'].map(element => parseInt(element, 10));
   numericFields.forEach(field => camperData[field] = convertToNumber(field));
-  arrayFields.forEach(field => camperData[field] = convertToArray(field));
 
+  
 }
 
 async function validateAndCreate(collectionName, db, data, session) {
