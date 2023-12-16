@@ -12,29 +12,25 @@ const PostCamper = () => {
     Location: '',
     Salary: '',
     EnglishLevel: '',
-    Skills: [],
     Biography: '',
-    Stacks: '',
+    Skills: [],
+    Stacks: [],
     Gender: '',
-    Working: false,
-    DocumentType: '',
-    CV: null,
-    VideoCamper: '',
-    SocialMedia: {
-      Github: '',
-      LinkedIn: '',
-      DriveVideo: '',
-    },
+    TypeDocument: '',
+    pdf: null,
+    Github: '',
+    LinkedIn: '',
+    PresentationVideo: '',
   });
 
-  const [cvData, setCvData] = useState({
+  const [pdfData, setpdfData] = useState({
     name: '',
     data: null,
   });
 
   const [genderOptions, setGenderOptions] = useState([]);
   const [englishLevelOptions, setEnglishLevelOptions] = useState([]);
-  const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
+  const [TypeDocumentOptions, setTypeDocumentOptions] = useState([]);
   const [skillsOptions, setSkillsOptions] = useState([]);
 
   const history = useHistory();
@@ -42,7 +38,7 @@ const PostCamper = () => {
   useEffect(() => {
     fetchCollectionOptions('Gender', setGenderOptions);
     fetchCollectionOptions('English_Levels', setEnglishLevelOptions);
-    fetchCollectionOptions('Document_Type', setDocumentTypeOptions);
+    fetchCollectionOptions('Document_Type', setTypeDocumentOptions);
     fetchCollectionOptions('Skills', setSkillsOptions);
   }, []);
 
@@ -50,46 +46,43 @@ const PostCamper = () => {
     try {
       const response = await axios.get(`http://localhost:6929/cvs/${collectionName}`);
       let options = [];
-
+  
       if (collectionName === 'Gender' || collectionName === 'Document_Type') {
         options = response.data.map((option) => ({ key: option._id, text: option.Name, value: option.Name }));
+      } else if (collectionName === 'Skills') {
+        // Usar _id como el valor para las habilidades
+        options = response.data.map((option) => ({ key: option._id, text: option.S_Name, value: option._id }));
       } else {
         options = response.data.map((option) => ({ key: option._id, text: option.E_Name || option.S_Name, value: option.E_Name || option.S_Name }));
       }
-
+  
       setOptions(options);
     } catch (error) {
       console.error(`Error fetching ${collectionName} options:`, error);
     }
   };
+  
 
   const handleCamperChange = (e, data) => {
     const { name, value } = data ? data : e.target;
-    const updatedValue = name === 'Skills' ? value : value;
+    let updatedValue = value;
   
-    if (name.includes('SocialMedia')) {
-      const socialMediaField = name.split('.')[1];
-      setCamperData((prevData) => ({
-        ...prevData,
-        SocialMedia: {
-          ...prevData.SocialMedia,
-          [socialMediaField]: updatedValue,
-        },
-      }));
-    } else {
-      setCamperData((prevData) => ({
-        ...prevData,
-        [name]: updatedValue,
-      }));
+    // Verifica si el campo es Skills o Stacks y si el valor es una cadena
+    if ((name === 'Skills' || name === 'Stacks') && typeof value === 'string') {
+      updatedValue = value.split('\n').map((item) => item.trim());
     }
+  
+    setCamperData((prevData) => ({
+      ...prevData,
+      [name]: updatedValue,
+    }));
   };
   
-  
 
-  const handleCvChange = (e) => {
+  const handlepdfChange = (e) => {
     const { name, files } = e.target;
     const file = files[0];
-    setCvData((prevData) => ({
+    setpdfData((prevData) => ({
       ...prevData,
       [name]: file.name,
       data: file,
@@ -98,11 +91,13 @@ const PostCamper = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const formData = new FormData();
-      formData.append('pdf', cvData.data);
-
+      formData.append("pdf", pdfData.data, pdfData.name);
+  //formData.append("pdf", data.pdf[0]);
+      console.log("Contenido del archivo PDF:", pdfData.data);
+  
       Object.entries(camperData).forEach(([key, value]) => {
         if (key === 'SocialMedia') {
           Object.entries(value).forEach(([socialKey, socialValue]) => {
@@ -116,14 +111,16 @@ const PostCamper = () => {
           formData.append(key, value);
         }
       });
-
+  
       const response = await axios.post('http://localhost:6929/cvs/newCamper/add', formData);
       console.log(response.data);
       history.push('/campersList');
     } catch (error) {
       console.error('Error posting camper:', error.response);
     }
+    console.log("Contenido del input de PDF:", pdfData.data);
   };
+  
 
 
   return (
@@ -155,7 +152,12 @@ const PostCamper = () => {
       <textarea name="Biography" value={camperData.Biography} onChange={(e) => handleCamperChange(e, e.target)} required />
 
       <label>Stacks:</label>
-      <input type="text" name="Stacks" value={camperData.Stacks} onChange={(e) => handleCamperChange(e, e.target)} required />
+        <textarea
+          name="Stacks"
+          value={camperData.Stacks.join('\n')} 
+          onChange={(e) => handleCamperChange(e, e.target)}
+          required
+        />
 
 
       <Form.Field>
@@ -183,9 +185,9 @@ const PostCamper = () => {
       <Form.Field>
           <label>Document Type:</label>
           <Select
-            name="DocumentType"
-            value={camperData.DocumentType}
-            options={documentTypeOptions}
+            name="TypeDocument"
+            value={camperData.TypeDocument}
+            options={TypeDocumentOptions}
             onChange={handleCamperChange}
             required
           />
@@ -196,26 +198,24 @@ const PostCamper = () => {
         name="Skills"
         placeholder="Select Skills"
         value={camperData.Skills}
-        options={skillsOptions.map((option) => ({ key: option.key, text: option.text, value: option.value }))}
+        options={skillsOptions}
         onChange={handleCamperChange}
         multiple
-    />
+        />
 
 
-        <label>CV (PDF):</label>
-        <input type="file" name="pdf" accept=".pdf" onChange={handleCvChange} />
+        <label>pdf (PDF):</label>
+        <input type="file" name="pdf" accept=".pdf" onChange={handlepdfChange} />
 
-        <label>Video Camper:</label>
-        <input type="text" name="VideoCamper" value={camperData.VideoCamper} onChange={(e) => handleCamperChange(e, e.target)} />
 
         <label>Github:</label>
-        <input type="text" name="SocialMedia.Github" value={camperData.SocialMedia.Github} onChange={handleCamperChange} />
+        <input type="text" name="Github" value={camperData.Github} onChange={handleCamperChange} />
 
         <label>LinkedIn:</label>
-        <input type="text" name="SocialMedia.LinkedIn" value={camperData.SocialMedia.LinkedIn} onChange={handleCamperChange} />
+        <input type="text" name="LinkedIn" value={camperData.LinkedIn} onChange={handleCamperChange} />
 
         <label>Presentation Video:</label>
-        <input type="text" name="SocialMedia.DriveVideo" value={camperData.SocialMedia.DriveVideo} onChange={handleCamperChange} />
+        <input type="text" name="PresentationVideo" value={camperData.PresentationVideo} onChange={handleCamperChange} />
         <button type="submit">Post Camper</button>
       </form>
     </div>
