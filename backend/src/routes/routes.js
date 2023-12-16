@@ -22,6 +22,7 @@ const { deleteCamper } = require('../controllers/deleteCamper.js');
 //loginSystem
 const { SignUp } = require('../controllers/logIn/signUp.js');
 const { SignIn } = require('../controllers/logIn/SignIn.js');
+const { sendRecoveryCode } = require('../controllers/logIn/sendRecoveryCode.js');
 const uri = process.env.DDBB256;
 const nombreBase = 'proyectCv';
 
@@ -260,12 +261,24 @@ router.post('/SignUp/Create', async (req, res) => {
   }
 });
 
-//SignUp
+//SignIn
 router.post('/SignIn/Register', async (req, res) => {
   try {
 
     let data = req.body;
     const result = await SignIn(data, req);
+      res.json(result);
+  } catch (error) {
+      handleMongoValidationError(error, res);
+  }
+});
+
+//SignIn
+router.post('/RecoveryPassword/SendEmail', async (req, res) => {
+  try {
+
+    let data = req.body;
+    const result = await sendRecoveryCode(data);
       res.json(result);
   } catch (error) {
       handleMongoValidationError(error, res);

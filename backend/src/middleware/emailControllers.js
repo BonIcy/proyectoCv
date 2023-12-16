@@ -18,7 +18,7 @@ async function sendEmail(data, subject, templateFileName) {
     let content = await fs.readFile(filePath, 'utf-8');
 
     switch (templateFileName) {
-      case "SignUp":
+        case "SignUp":
         content = content.replace('{nombre}', data.Username);    
         switch (data.Role) {
           case "Company":
@@ -78,8 +78,13 @@ async function sendEmail(data, subject, templateFileName) {
               break;
         }
         break;
-    
-      default:
+        
+        case "RecoveryPassword":
+            content = content.replace('{nombre}', data.Username);
+            content = content.replace('{code}', data.Recovery_Code); 
+            content = content.replace('{date}', data.CreatedAt); 
+        break;
+        default:
         break;
     }
 
