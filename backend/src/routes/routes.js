@@ -178,6 +178,7 @@ router.post('/newCamper/add', async (req, res) => {
   const data = req.body;
   const camperData = { ...data };
   delete camperData.Github;
+  delete camperData.pdf;
   delete camperData.LinkedIn;
   delete camperData.PresentationVideo;
   const socialData = {
