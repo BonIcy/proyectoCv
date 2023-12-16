@@ -1,6 +1,4 @@
 function handleMongoValidationError(error, res) {
-  console.log(error.code);
-  console.log(error.name);
   if (error.name === 'MongoServerError' && error.code === 121) {
     // MongoDB validation error
     const errorInfo = error.errInfo || {};
