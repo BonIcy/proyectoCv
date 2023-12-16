@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Button, Form, Select } from 'semantic-ui-react';
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+
 const PostCamper = () => {
   const [camperData, setCamperData] = useState({
     Name: '',
@@ -24,8 +27,7 @@ const PostCamper = () => {
   });
 
   const [pdfData, setpdfData] = useState({
-    name: '',
-    data: null,
+    data: null
   });
 
   const [genderOptions, setGenderOptions] = useState([]);
@@ -48,11 +50,11 @@ const PostCamper = () => {
       let options = [];
   
       if (collectionName === 'Gender' || collectionName === 'Document_Type') {
-        options = response.data.map((option) => ({ key: option._id, text: option.Name, value: option.Name }));
+        options = response.data.map((option) => ({ key: option._id, text: option.Name, value: option._id }));
       } else if (collectionName === 'Skills') {
         options = response.data.map((option) => ({ key: option._id, text: option.S_Name, value: option._id }));
       } else {
-        options = response.data.map((option) => ({ key: option._id, text: option.E_Name || option.S_Name, value: option.E_Name || option.S_Name }));
+        options = response.data.map((option) => ({ key: option._id, text: option.E_Name || option.S_Name, value: option._id || option._id }));
       }
   
       setOptions(options);
@@ -79,21 +81,23 @@ const PostCamper = () => {
 
   const pdfChange = (e) => {
     const { name, files } = e.target;
-    const file = files[0];
+    const file = files[0]
+    console.log(file);
     setpdfData((prevData) => ({
       ...prevData,
-      [name]: file,
+      pdf: file,
     }));
   };
 
   const Sumbitt = async (e) => {
     e.preventDefault();
-  
+
     try {
       const formData = new FormData();
-      formData.append("pdf", pdfData.data, pdfData.name);
-  //formData.append("pdf", data.pdf[0]);
-      console.log("Contenido del archivo PDF:", pdfData.data);
+      console.log(pdfData);
+      formData.append("pdf", pdfData.pdf);
+
+  
   
       Object.entries(camperData).forEach(([key, value]) => {
         if (key === 'SocialMedia') {
@@ -104,6 +108,10 @@ const PostCamper = () => {
           value.forEach((skill) => {
             formData.append('Skills', skill);
           });
+        } else if (key === 'Stacks') {
+          value.forEach((Stacks) => {
+            formData.append('Stacks', Stacks);
+          });
         } else {
           formData.append(key, value);
         }
@@ -111,11 +119,11 @@ const PostCamper = () => {
   
       const response = await axios.post('http://localhost:6929/cvs/newCamper/add', formData);
       console.log(response.data);
-      history.push('/campersList');
+      // history.push('/campersList');
     } catch (error) {
       console.error('Error posting camper:', error.response);
     }
-    console.log("Contenido del input de PDF:", pdfData.data);
+    console.log("Contenido del input de PDF:", pdfData.pdf);
   };
   
 
