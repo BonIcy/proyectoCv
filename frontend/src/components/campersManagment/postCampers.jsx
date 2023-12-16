@@ -50,7 +50,6 @@ const PostCamper = () => {
       if (collectionName === 'Gender' || collectionName === 'Document_Type') {
         options = response.data.map((option) => ({ key: option._id, text: option.Name, value: option.Name }));
       } else if (collectionName === 'Skills') {
-        // Usar _id como el valor para las habilidades
         options = response.data.map((option) => ({ key: option._id, text: option.S_Name, value: option._id }));
       } else {
         options = response.data.map((option) => ({ key: option._id, text: option.E_Name || option.S_Name, value: option.E_Name || option.S_Name }));
@@ -63,11 +62,10 @@ const PostCamper = () => {
   };
   
 
-  const handleCamperChange = (e, data) => {
+  const camperChange = (e, data) => {
     const { name, value } = data ? data : e.target;
     let updatedValue = value;
   
-    // Verifica si el campo es Skills o Stacks y si el valor es una cadena
     if ((name === 'Skills' || name === 'Stacks') && typeof value === 'string') {
       updatedValue = value.split('\n').map((item) => item.trim());
     }
@@ -79,17 +77,16 @@ const PostCamper = () => {
   };
   
 
-  const handlepdfChange = (e) => {
+  const pdfChange = (e) => {
     const { name, files } = e.target;
     const file = files[0];
     setpdfData((prevData) => ({
       ...prevData,
-      [name]: file.name,
-      data: file,
+      [name]: file,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const Sumbitt = async (e) => {
     e.preventDefault();
   
     try {
@@ -126,36 +123,36 @@ const PostCamper = () => {
   return (
     <div>
       <h2>Create New Camper</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={Sumbitt}>
       <label>Name:</label>
-      <input type="text" name="Name" value={camperData.Name} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="text" name="Name" value={camperData.Name} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Last Name:</label>
-      <input type="text" name="LastName" value={camperData.LastName} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="text" name="LastName" value={camperData.LastName} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Email:</label>
-      <input type="email" name="Email" value={camperData.Email} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="email" name="Email" value={camperData.Email} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Phone:</label>
-      <input type="text" name="Phone" value={camperData.Phone} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="text" name="Phone" value={camperData.Phone} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Identification:</label>
-      <input type="text" name="identification" value={camperData.identification} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="text" name="identification" value={camperData.identification} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Location:</label>
-      <input type="text" name="Location" value={camperData.Location} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="text" name="Location" value={camperData.Location} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Salary:</label>
-      <input type="number" name="Salary" value={camperData.Salary} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <input type="number" name="Salary" value={camperData.Salary} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Biography:</label>
-      <textarea name="Biography" value={camperData.Biography} onChange={(e) => handleCamperChange(e, e.target)} required />
+      <textarea name="Biography" value={camperData.Biography} onChange={(e) => camperChange(e, e.target)} required />
 
       <label>Stacks:</label>
         <textarea
           name="Stacks"
           value={camperData.Stacks.join('\n')} 
-          onChange={(e) => handleCamperChange(e, e.target)}
+          onChange={(e) => camperChange(e, e.target)}
           required
         />
 
@@ -166,7 +163,7 @@ const PostCamper = () => {
             name="Gender"
             value={camperData.Gender}
             options={genderOptions}
-            onChange={handleCamperChange}
+            onChange={camperChange}
             required
           />
         </Form.Field>
@@ -177,7 +174,7 @@ const PostCamper = () => {
             name="EnglishLevel"
             value={camperData.EnglishLevel}
             options={englishLevelOptions}
-            onChange={handleCamperChange}
+            onChange={camperChange}
             required
           />
         </Form.Field>
@@ -188,7 +185,7 @@ const PostCamper = () => {
             name="TypeDocument"
             value={camperData.TypeDocument}
             options={TypeDocumentOptions}
-            onChange={handleCamperChange}
+            onChange={camperChange}
             required
           />
         </Form.Field>
@@ -199,23 +196,23 @@ const PostCamper = () => {
         placeholder="Select Skills"
         value={camperData.Skills}
         options={skillsOptions}
-        onChange={handleCamperChange}
+        onChange={camperChange}
         multiple
         />
 
 
         <label>pdf (PDF):</label>
-        <input type="file" name="pdf" accept=".pdf" onChange={handlepdfChange} />
+        <input type="file" name="pdf" accept=".pdf" onChange={pdfChange} />
 
 
         <label>Github:</label>
-        <input type="text" name="Github" value={camperData.Github} onChange={handleCamperChange} />
+        <input type="text" name="Github" value={camperData.Github} onChange={camperChange} />
 
         <label>LinkedIn:</label>
-        <input type="text" name="LinkedIn" value={camperData.LinkedIn} onChange={handleCamperChange} />
+        <input type="text" name="LinkedIn" value={camperData.LinkedIn} onChange={camperChange} />
 
         <label>Presentation Video:</label>
-        <input type="text" name="PresentationVideo" value={camperData.PresentationVideo} onChange={handleCamperChange} />
+        <input type="text" name="PresentationVideo" value={camperData.PresentationVideo} onChange={camperChange} />
         <button type="submit">Post Camper</button>
       </form>
     </div>
