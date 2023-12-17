@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CamperModal from '../campers/modal';
-import { Card, Button, Icon } from 'semantic-ui-react';
+import { Button, Form, Select, Dropdown, Card } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
 
@@ -12,17 +12,42 @@ const CampersList = () => {
   const [showWorking, setShowWorking] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedCamper, setSelectedCamper] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     fetchData();
-  }, [showWorking]);
+  }, [showWorking, searchTerm]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:6929/cvs/Campers/WorkOrNot/${showWorking}`);
+      let response;
+
+      if (
+        searchTerm === ""
+      ) {
+        response = await axios.get(
+          `http://localhost:6929/cvs/Campers/WorkOrNot/${showWorking}`
+        );
+      } else {
+        const filters = {};
+
+        if (searchTerm !== "") {
+          filters["$or"] = [
+            { Name: { $regex: searchTerm, $options: "i" } }, // Case-insensitive regex
+            { LastName: { $regex: searchTerm, $options: "i" } },
+          ];
+        }
+
+        response = await axios.post(
+          `http://localhost:6929/cvs/Campers/SearchEngine`,
+          {
+            $match: filters,
+          }
+        );
+      }
+
       setCampers(response.data);
     } catch (error) {
-      console.error('Error fetching camper data:', error);
+      console.error("Error fetching camper data:", error);
     }
   };
 
@@ -45,13 +70,6 @@ const CampersList = () => {
     }
   };
 
-  const postData = async () => {
-    // logica de postt
-  };
-
-  const updateData = async () => {
-    // logica de update
-  };
 
   const deleteData = async (id) => {
     const isConfirmed = window.confirm('Are you sure you want to delete this camper?');
@@ -65,6 +83,11 @@ const CampersList = () => {
     }
   };
 
+  const searchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+  };
+
   return (
     <div>
       <div>
@@ -76,6 +99,15 @@ const CampersList = () => {
         <button onClick={() => setShowWorking(true)}>Show Working</button>
         <button onClick={() => setShowWorking(false)}>Show Not Working</button>
       </div>
+      <Form.Field>
+        <label>Search by Name:</label>
+        <input
+          type="text"
+          placeholder="Enter camper name"
+          value={searchTerm}
+          onChange={searchChange}
+        />
+      </Form.Field>
       <Card.Group>
         {campers.map(camper => (
           <Card key={camper._id}>
