@@ -78,11 +78,11 @@ const Campers = () => {
         />
       </Form.Field>
   
-      {campers.length === 0 ? (
+      {campers.length === 0 || campers.every(camper => camper.Working === true) ? (
         <p>There are no available data with these parameters. :(</p>
       ) : (
         campers
-          .filter(camper => camper.Working === false) 
+          .filter(camper => camper.Working === false)
           .map(camper => (
             <div key={camper._id} className="card">
               <h2>{`${camper.Name} ${camper.LastName}`}</h2>
