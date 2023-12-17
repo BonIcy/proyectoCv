@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { Link as ReactLink, Outlet, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -28,6 +27,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import { createTheme, ThemeProvider, useTheme  } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -44,8 +45,7 @@ function Copyright(props) {
 }
 
 const defaultTheme = createTheme();
-
-const schema = yup.object().shape({
+let schema = yup.object().shape({
     Username: yup
       .string()
       .required("Username is required")
@@ -77,6 +77,7 @@ const schema = yup.object().shape({
 });
 
 export default function SignUp() {
+
     const navigate = useHistory();
     const {
       register,
@@ -91,14 +92,36 @@ export default function SignUp() {
         Email: "",
         Role: "",
         Password: "",
-        Newpassword: ""
+        Newpassword: "",
+        Company: "",
+        Address: "",
+        Phone: "",
+        Country: "",
+        City: "",
+        Description: "",
+        legalRep_Name: "",
+        legalRep_identificationNumber: 0
       }, });
     const [Role, setRole] = React.useState("");
-    const handleChangeR = (event) => {setRole(event.target.value)};
+    const handleChangeR = (event) => {
+        setRole(event.target.value);
+        switch (event.target.value) {
+            case 'Company':
+                setIsCompany(true);
+                break;
+        
+            default:
+                setIsCompany(false);
+                break;
+        }
+    };
     const [showPassword, setShowPassword] = React.useState(false);
     const [progress, setProgress] = React.useState(10);
     const [isLoading, setIsLoading] = useState(false);
+    const [isCompany, setIsCompany] = useState(false);
     const [open, setOpen] = React.useState(false);
+    const [okRes, setOkRes] = React.useState(false);
+    const [textError, setTextError] = React.useState('');
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
@@ -113,6 +136,126 @@ export default function SignUp() {
             delete data.Newpassword;
             loadingAnConnect(data);
         })();
+    }
+    //validation System
+    if (!isCompany) {
+        schema = yup.object().shape({
+            Username: yup
+              .string()
+              .required("Username is required")
+              .min(3, "Username must be at least 3 characters long")
+              .max(100, "Username must be at most 100 characters long")
+              .matches(
+                /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                "Username must be a text without special characters"
+              ),
+            Email: yup
+              .string()
+              .required("Email is required")
+              .min(15, "Email must be at least 15 characters long")
+              .max(255, "Email must be at most 255 characters long")
+              .test("isGmail", "Only Gmail addresses are allowed", (value) =>
+                value.endsWith("@gmail.com")
+              ),
+            Password: yup
+              .string()
+              .required("Password is required")
+              .min(5, "Password must be at least 5 characters long")
+              .max(80, "Password must be at most 80 characters long"),
+            Newpassword: yup
+              .string()
+              .oneOf([yup.ref("Password"), null], "Passwords must match")
+              .required("Password confirmation is required")
+              .min(5, "Password must be at least 5 characters long")
+              .max(80, "Password must be at most 80 characters long")
+        });
+        
+    }else {
+        schema = yup.object().shape({
+            Username: yup
+              .string()
+              .required("Username is required")
+              .min(3, "Username must be at least 3 characters long")
+              .max(100, "Username must be at most 100 characters long")
+              .matches(
+                /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                "Username must be a text without special characters"
+              ),
+            Email: yup
+              .string()
+              .required("Email is required")
+              .min(15, "Email must be at least 15 characters long")
+              .max(255, "Email must be at most 255 characters long")
+              .test("isGmail", "Only Gmail addresses are allowed", (value) =>
+                value.endsWith("@gmail.com")
+              ),
+            Password: yup
+              .string()
+              .required("Password is required")
+              .min(5, "Password must be at least 5 characters long")
+              .max(80, "Password must be at most 80 characters long"),
+            Newpassword: yup
+              .string()
+              .oneOf([yup.ref("Password"), null], "Passwords must match")
+              .required("Password confirmation is required")
+              .min(5, "Password must be at least 5 characters long")
+              .max(80, "Password must be at most 80 characters long"),
+            Company: yup
+              .string()
+              .required("Company is required")
+              .min(3, "Company must be at least 3 characters long")
+              .max(80, "Company must be at most 100 characters long"),
+            Address: yup
+              .string()
+              .required("Address is required")
+              .min(3, "Address must be at least 3 characters long")
+              .max(255, "Address must be at most 255 characters long"),
+            Phone: yup
+              .string()
+              .required("Phone is required")
+              .min(4, "Phone must be at least 4 characters long")
+              .max(20, "Phone must be at most 20 characters long")
+              .matches(
+                /^\+\d{1,20}$/,
+                "The Phone number must be a sequence of numbers with the prefix according to the country. example: +57XXXXXXXX"),
+            Country: yup
+                .string()
+                .required("Country is required")
+                .min(3, "Country must be at least 3 characters long")
+                .max(60, "Country must be at most 60 characters long")
+                .matches(
+                  /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                  "Country must be a text without special characters"),
+            City: yup
+                .string()
+                .required("City is required")
+                .min(3, "City must be at least 3 characters long")
+                .max(60, "City must be at most 60 characters long")
+                .matches(
+                  /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                  "City must be a text without special characters"),
+            Description: yup
+                  .string()
+                  .required("Description is required")
+                  .min(3, "Description must be at least 3 characters long")
+                  .max(600, "Description must be at most 600 characters long")
+                  .matches(
+                    /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                    "Description must be a text without special characters"),
+            legalRep_Name: yup
+                .string()
+                .required("Name Of The Legal Representative is required")
+                .min(3, "Name Of The Legal Representative must be at least 3 characters long")
+                .max(60, "Name Of The Legal Representative must be at most 60 characters long")
+                .matches(
+                  /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$/,
+                  "Name Of The Legal Representative must be a text without special characters"),
+            legalRep_identificationNumber: yup
+                .number("Identification Number Of The Legal Representative must be a Number")
+                .positive("Identification Number Of The Legal Representative must be a positive number")
+                .integer("Identification Number Of The Legal Representative must be an integer")
+                .required("Identification Number Of The Legal Representative is required")
+        });
     }
 
     const loadingAnConnect = async (data) => {
@@ -130,19 +273,28 @@ export default function SignUp() {
                         setProgress(progress);
                     }
                 });
-               
-            }catch(error){
+                switch (response.statusText) {
+                    case "OK":
+                        setOkRes(true);
+                        setTimeout(() => {
+                            setOkRes(false);
+                            navigate.push("/SignIn");
+                        }, 3000);
+                        break;
                 
-                console.log(error.response.data.message);
+                    default:
+                        break;
+                }
+            }catch(error){
+                handleClickOpen();
+                let errorData = error.response.data;
+                let errorValidate = errorData.keyValue;
+                setTextError(error.response.data.message ? error.response.data.message : `The ${Object.keys(errorValidate)[0]}: ${errorValidate.Email} is already registered, try another one.`);
             }
         } catch (error) {
           console.error(error);
         } finally {
-            handleClickOpen()
             setIsLoading(false);
-        //   setTimeout(() => {
-        //     navigate("/SignIn");
-        //   }, 1000);
         }
     };
     
@@ -195,8 +347,8 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                     Sign Up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={eventSubmit} sx={{ mt: 1 }} fullWidth style={{ width: '300px', height: '750px' }}>
-                        <InputLabel id="Email-label">Email</InputLabel>
+                    <Box component="form" noValidate onSubmit={eventSubmit} sx={{ mt: 1 }} fullWidth style={{ width: '300px', height: isCompany ? '1600px' : '750px', }}>
+                        <InputLabel id="Email-label">Username</InputLabel>
                         <TextField
                             margin="normal"
                             required
@@ -319,6 +471,217 @@ export default function SignUp() {
                             control={<Checkbox value="remember" color="primary" onClick={handleClickShowPassword}/>}
                             label="Show passwords"
                         />
+                         {isCompany && (
+                            <>
+                                <Typography component="h1" variant="h5" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                Company Information
+                                </Typography>
+                                <TextField
+                                margin="normal"
+                                fullWidth
+                                required
+                                id="Company"
+                                label="Company Name"
+                                name="Company"
+                                {...register("Company")}
+                                autoComplete="Company"
+                                autoFocus
+                                />
+                                <Typography
+                                sx={{
+                                    opacity: 0.9,
+                                    border: "2px solid #58BC8",
+                                    caretColor: "#b6003f",
+                                    color: "#b6003f",
+                                    display: "block",
+                                    textAlign: "center",
+                                    fontWeight: 700,
+                                    fontFamily: "monospace",
+                                }}
+                                >
+                                    {errors.Company?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="Address"
+                                    label="Company Address"
+                                    name="Address"
+                                    {...register("Address")}
+                                    autoComplete="Address"
+                                    autoFocus
+                                    />
+                                    <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.Address?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="Phone"
+                                    label="Company Phone"
+                                    name="Phone"
+                                    {...register("Phone")}
+                                    autoComplete="Phone"
+                                    autoFocus
+                                    />
+                                    <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.Phone?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="Country"
+                                    label="Company Country"
+                                    name="Country"
+                                    {...register("Country")}
+                                    autoComplete="Country"
+                                    autoFocus
+                                />
+                                <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.Country?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="City"
+                                    label="Company City"
+                                    name="City"
+                                    {...register("City")}
+                                    autoComplete="City"
+                                    autoFocus
+                                />
+                                <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.City?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="Description"
+                                    label="Company Description"
+                                    name="Description"
+                                    multiline
+                                    rows={4}
+                                    {...register("Description")}
+                                    autoComplete="Description"
+                                    autoFocus
+                                />
+                                <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.Description?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="legalRep_Name"
+                                    label="Name Of The Legal Representative"
+                                    name="legalRep_Name"
+                                    {...register("legalRep_Name")}
+                                    autoComplete="legalRep_Name"
+                                    autoFocus
+                                />
+                                <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.legalRep_Name?.message}
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    type='number'
+                                    fullWidth
+                                    id="legalRep_identificationNumber"
+                                    label="Identification Number Of The Legal Representative"
+                                    name="legalRep_identificationNumber"
+                                    inputProps={{ inputMode: "numeric" }}
+                                    {...register("legalRep_identificationNumber")}
+                                    autoComplete="legalRep_identificationNumber"
+                                    autoFocus
+                                />
+                                <Typography
+                                    sx={{
+                                        opacity: 0.9,
+                                        border: "2px solid #58BC8",
+                                        caretColor: "#b6003f",
+                                        color: "#b6003f",
+                                        display: "block",
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                        fontFamily: "monospace",
+                                    }}
+                                >
+                                    {errors.legalRep_identificationNumber?.message}
+                                </Typography>
+                          </>
+                        )}
                         <Button
                             type="submit"
                             fullWidth
@@ -336,8 +699,8 @@ export default function SignUp() {
                         </Grid>
                         <Grid container>
                             <Grid item>
-                            <Link href="/Sign In" variant="body2" color={'#000087'}>
-                                {"Don't have an account? Sign Up"}
+                            <Link href="/SignIn" variant="body2" color={'#000087'}>
+                                {"Have an account? Sign In"}
                             </Link>
                             </Grid>
                         </Grid>
@@ -356,8 +719,8 @@ export default function SignUp() {
                 {"Error found try again"}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText className='ContentModal'>
-                        
+                    <DialogContentText>
+                        {textError}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -366,6 +729,22 @@ export default function SignUp() {
                 </Button>
                 </DialogActions>
             </Dialog>
+            {okRes && (
+                <Stack sx={{ width: '100%' }} spacing={2} style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+              
+                    justifyContent: 'end',
+                    zIndex: 9999,
+                }}>
+                    <Alert severity="success">The user was created correctly, remember your username and password!</Alert>
+                </Stack>
+            )}
         </ThemeProvider>
     );
 }
