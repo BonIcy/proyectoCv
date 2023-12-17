@@ -7,12 +7,13 @@ import CampersList from './components/campersManagment/campersManagment';
 import PostCamper from './components/campersManagment/postCampers';
 import Campers from './components/campers/camperCards';
 import Sidebar from './components/sidebar/sidebar';
+import SignUp from './components/SignUp/SignUp';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Switch>
           <Route path="/managmentCampers" component={CampersList} />
           <Route path="/postCamper" component={PostCamper} />
@@ -20,6 +21,7 @@ function App() {
           <Route path="/administration" component={Get} /> 
           <Route path="/postData" component={Post} /> 
           <Route path="/update" component={Update} /> 
+          <Route path="/SignUp" component={SignUp} /> 
         </Switch>
       </Router>
     </div>
