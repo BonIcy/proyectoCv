@@ -62,7 +62,7 @@ const Campers = () => {
     setSelectedCamper(null);
   };
 
-  const handleFilterChange = (e, data) => {
+  const filterChange = (e, data) => {
     const value = data.value;
     setFilterValue(value);
   };
@@ -74,26 +74,32 @@ const Campers = () => {
         <Select
           placeholder="Select English Level"
           options={englishLevelOptions}
-          onChange={handleFilterChange}
+          onChange={filterChange}
         />
       </Form.Field>
-
-      {campers.map(camper => (
-        <div key={camper._id} className="card">
-          <h2>{`${camper.Name} ${camper.LastName}`}</h2>
-          <p>Location: {camper.Location}</p>
-          <p>Salary: {camper.Salary}</p>
-          <p>English Level: {camper.EnglishLevel}</p>
-          <p>Skills: {camper.Skills.join(', ')}</p>
-          <Button onClick={() => openModal(camper)}>
-            See Details
-          </Button>
-        </div>
-      ))}
-
+  
+      {campers.length === 0 ? (
+        <p>There are no available data with these parameters. :(</p>
+      ) : (
+        campers
+          .filter(camper => camper.Working === false) 
+          .map(camper => (
+            <div key={camper._id} className="card">
+              <h2>{`${camper.Name} ${camper.LastName}`}</h2>
+              <p>Location: {camper.Location}</p>
+              <p>Salary: {camper.Salary}</p>
+              <p>English Level: {camper.EnglishLevel}</p>
+              <p>Skills: {camper.Skills.join(', ')}</p>
+              <Button onClick={() => openModal(camper)}>
+                See Details
+              </Button>
+            </div>
+          ))
+      )}
+  
       <CamperModal show={showModal} onHide={closeModal} camper={selectedCamper} />
     </div>
   );
-};
-
-export default Campers;
+  };
+  
+  export default Campers;
