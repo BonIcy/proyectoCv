@@ -32,7 +32,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { createTheme, ThemeProvider, useTheme  } from '@mui/material/styles';
-
+import AuthService from '../auth/authService';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -180,7 +180,8 @@ export default function SignIn() {
                         setTimeout(() => {
                             setOkRes(false);
                             console.log(response);
-                            navigate.push("/");
+                            AuthService.login(response.data.message);
+                            navigate.push("/home");
                         }, 3000);
                         break;
                 
