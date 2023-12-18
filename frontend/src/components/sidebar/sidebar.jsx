@@ -22,7 +22,12 @@ const Sidebar = ( ) => {
   const userRole = localStorage.getItem('user_role');
   const location = useLocation();
   const { state } = location;
-  
+
+  const signOut = () => {
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('auth_token');
+     navigate.push('/SignIn');
+  };
 
   return (
     <>
@@ -42,12 +47,20 @@ const Sidebar = ( ) => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1,  fontFamily: 'Poppins', fontSize: '2rem'}}>
               Working CampusLand
             </Typography>
-            <Button color="inherit" style={{ fontFamily: 'Poppins', fontSize: '1rem'}} onClick={goSignIn}>
-              Sign In
-            </Button>
-            <Button color="inherit" style={{ fontFamily: 'Poppins', fontSize: '1rem'}} onClick={goSignUp}>
-              Sign Up
-            </Button>
+            {userRole ? (
+              <Button color="inherit" style={{ fontFamily: 'Poppins', fontSize: '1rem' }} onClick={signOut}>
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Button color="inherit" style={{ fontFamily: 'Poppins', fontSize: '1rem' }} onClick={goSignIn}>
+                  Sign In
+                </Button>
+                <Button color="inherit" style={{ fontFamily: 'Poppins', fontSize: '1rem' }} onClick={goSignUp}>
+                  Sign Up
+                </Button>
+              </>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
