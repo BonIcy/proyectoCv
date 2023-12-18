@@ -8,6 +8,8 @@ const errorcontroller  = require('../middleware/errorsMongodb.js');
 const {handleMongoValidationError}  = require('../middleware/validateMongoErrors.js');
 const getData = require('../controllers/get');
 const getInfoCampers = require('../controllers/InfoCampers.js');
+const getOneCamper = require('../controllers/infoOneCamper.js');
+
 const getUserInfo = require('../controllers/InfoUser.js');
 const getWorkersOrNot = require('../controllers/workers.js');
 const {postData} = require('../controllers/post');
@@ -113,6 +115,23 @@ router.get('/Info/Campers', async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: `Error al obtener la data`, message: error  });
+  }
+});
+
+
+router.get('/Info/Campers/:camperId', async (req, res) => {
+  const camperId = req.params.camperId;
+  
+  try {
+    const result = await getOneCamper(camperId);
+    
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(404).json({ error: 'Camper not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
