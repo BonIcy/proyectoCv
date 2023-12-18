@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Get from './components/crruds/get';
 import Post from './components/crruds/post';
@@ -14,8 +14,14 @@ import SignIn from './components/SignIn/SignIn';
 import PrivateRoute from './components/auth/privateRoute';
 import RecoveryPassword from './components/RecoveryPassword/RecoveryPassword';
 import VerifyCode from './components/VerifyCode/VerifyCode';
+import AuthService from './components/auth/authService';
 
 function App() {
+  const [userRole, setUserRole] = useState(AuthService.getRole());
+
+  useEffect(() => {
+    setUserRole(AuthService.getRole());
+  }, []);
   return (
     <div className="App">
       <Router>
@@ -24,19 +30,32 @@ function App() {
           <Route path="/SignUp" component={SignUp} /> 
           <Route path="/SignIn" component={SignIn} /> 
           <PrivateRoute path="/home" component={Campers} /> {/* aca ponga el home cuando lo termine mmgv */}
-          <PrivateRoute path="/managmentCampers" component={CampersList} />
-          <PrivateRoute path="/postCamper" component={PostCamper} />
-          <PrivateRoute path="/updateCamper/:id" component={UpdateCamper} />
-          <PrivateRoute path="/campers" component={Campers} />
-          <PrivateRoute path="/administration" component={Get} /> 
-          <PrivateRoute path="/postData" component={Post} /> 
-          <Route path="/update" component={Update} /> 
-          <Route path="/RecoveryPassword" component={RecoveryPassword} /> 
-          <Route path="/VerifyCode" component={VerifyCode} /> 
+          <PrivateRoute path="/managmentCampers" 
+          component={CampersList} 
+          roles={['Admin']} />
+          <PrivateRoute path="/postCamper" 
+          component={PostCamper} 
+          roles={['Admin']} />
+          <PrivateRoute path="/updateCamper/:id"
+           component={UpdateCamper}
+           roles={['Admin']} />
+          <PrivateRoute path="/campers"
+           component={Campers}
+           roles={['Company', 'User', 'Admin']} />
+          <PrivateRoute path="/administration"
+           component={Get}
+           roles={['Admin']} /> 
+          <PrivateRoute path="/postData"
+           component={Post}
+           roles={['Admin']} /> 
+          <PrivateRoute path="/update"
+           component={Update}
+           roles={['Admin']} /> 
+        <Route path="/RecoveryPassword" component={RecoveryPassword} />
+        <Route path="/VerifyCode" component={VerifyCode} />
         </Switch>
       </Router>
     </div>
   );
 }
-
 export default App;
