@@ -691,13 +691,6 @@ export default function SignUp() {
                             Sign Up
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                            <Link href="/RecoveryPassword" variant="body2" color={'#000087'}>
-                                Forgot password?
-                            </Link>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
                             <Grid item>
                             <Link href="/SignIn" variant="body2" color={'#000087'}>
                                 {"Have an account? Sign In"}
