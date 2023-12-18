@@ -5,6 +5,21 @@ const CamperModal = ({ show, onHide, camper }) => {
   if (!camper) {
     return null;
   }
+
+  const downloadPdf = () => {
+    if (Array.isArray(camper.CV) && camper.CV.length > 0 && camper.CV[0].Pdf) {
+      const pdfData = atob(camper.CV[0].Pdf);
+
+      const pdfBlob = new Blob([new Uint8Array(pdfData.split('').map((char) => char.charCodeAt(0)))], {
+        type: 'application/pdf',
+      });
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(pdfBlob);
+      downloadLink.download = camper.CV[0].Name || 'document.pdf';
+      downloadLink.click();
+    }
+  };
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -38,7 +53,17 @@ const CamperModal = ({ show, onHide, camper }) => {
             )}
           </div>
         )}
+
+        {camper.CV && Array.isArray(camper.CV) && camper.CV.length > 0 && camper.CV[0].Pdf && (
+          <div>
+            <p>CV: {camper.CV[0].Name}</p>
+            <Button variant="primary" onClick={downloadPdf}>
+              Download CV
+            </Button>
+          </div>
+        )}
       </Modal.Body>
+      
     </Modal>
   );
 };

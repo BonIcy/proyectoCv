@@ -20,35 +20,35 @@ const Campers = () => {
     const fetchData = async () => {
       try {
         let response;
-
-        if (filterValue === null && selectedGender.length === 0 && selectedSkills.length === 0) {
+  
+        if (filterValue === null && (selectedGender === null || selectedGender.length === 0) && selectedSkills.length === 0) {
           response = await axios.get(`http://localhost:6929/cvs/Campers/WorkOrNot/${showWorking}`);
         } else {
           const filters = {};
-
+  
           if (filterValue !== null) {
             filters['EnglishLevelInfo._id'] = { $in: filterValue };
           }
-
-          if (selectedGender.length > 0) {
+  
+          if (selectedGender !== null && selectedGender.length > 0) {
             filters['GenderInfo._id'] = { $in: selectedGender };
           }
-
+  
           if (selectedSkills.length > 0) {
             filters['SkillsInfo._id'] = { $all: selectedSkills };
           }
-
+  
           response = await axios.post(`http://localhost:6929/cvs/Campers/SearchEngine`, {
             $match: filters,
           });
         }
-
+  
         setCampers(response.data);
       } catch (error) {
         console.error('Error fetching camper data:', error);
       }
     };
-
+  
     fetchData();
   }, [showWorking, filterValue, selectedGender, selectedSkills]);
 

@@ -18,7 +18,7 @@ async function SignUp(userData, companyData) {
 
     try {
       const db = client.db(nombreBase);
-  
+    
       const idU = await incrementWithSession('User', session, db);
       userData = { ...userData, _id: idU };
       await validateAndCreate('User', db, userData, session);
@@ -28,22 +28,23 @@ async function SignUp(userData, companyData) {
         companyData = { ...companyData, _id: idD, UserId: idU };
         await validateAndCreate('Data_User', db, companyData, session);
       }
+
       await session.commitTransaction();
       const result = { status: 201, message: `El usuario se ha creado correctamente` };
+      sendEmail(userData, "User Creation", "SignUp");
       return result;
 
     } catch (error) {
         await session.abortTransaction();
         throw error;
     } finally {
-        sendEmail(userData, "User Creation", "SignUp");
         session.endSession();
     }
-  } catch (error) {
-    throw error;
-  } finally {
-    client.close();
-  }
+    } catch (error) {
+      throw error;
+    } finally {
+      client.close();
+    }
 }
 
 module.exports = {
