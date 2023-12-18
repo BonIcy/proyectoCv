@@ -10,22 +10,25 @@ import Campers from './components/campers/camperCards';
 import Sidebar from './components/sidebar/sidebar';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
-
+//import Home from './components/home/Home';
+import PrivateRoute from './components/auth/privateRoute';
 function App() {
   return (
     <div className="App">
       <Router>
         <Sidebar />
         <Switch>
-          <Route path="/managmentCampers" component={CampersList} />
-          <Route path="/postCamper" component={PostCamper} />
-          <Route path="/updateCamper/:id" component={UpdateCamper} />
-          <Route path="/campers" component={Campers} />
-          <Route path="/administration" component={Get} /> 
-          <Route path="/postData" component={Post} /> 
-          <Route path="/update" component={Update} /> 
           <Route path="/SignUp" component={SignUp} /> 
           <Route path="/SignIn" component={SignIn} /> 
+          <PrivateRoute path="/home" component={Campers} /> {/* aca ponga el home cuando lo termine mmgv */}
+          <PrivateRoute path="/managmentCampers" component={CampersList} />
+          <PrivateRoute path="/postCamper" component={PostCamper} />
+          <PrivateRoute path="/updateCamper/:id" component={UpdateCamper} />
+          <PrivateRoute path="/campers" component={Campers} />
+          <PrivateRoute path="/administration" component={Get} /> 
+          <PrivateRoute path="/postData" component={Post} /> 
+          <Route path="/update" component={Update} /> 
+
         </Switch>
       </Router>
     </div>
