@@ -10,15 +10,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import AuthService from '../auth/authService';
 
-const Sidebar = () => {
+const Sidebar = ( ) => {
   const navigate = useHistory();
   const [show, setShow] = useState(false);
   const closeSidebar = () => setShow(false);
   const showSidebar = () => setShow(true);
   const goSignIn = () =>  navigate.push('/SignIn');
   const goSignUp = () =>  navigate.push("/SignUp");
-
+  const userRole = localStorage.getItem('user_role');
   const location = useLocation();
   const { state } = location;
   
@@ -56,22 +57,28 @@ const Sidebar = () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <hr />
+          {userRole === 'Admin' && (
           <div>
             <Link to="/managmentCampers" onClick={closeSidebar}>
               Management Campers
             </Link>
           </div>
+        )}
+        {(userRole === 'Admin' || userRole === 'Company' || userRole === 'User') && (
           <div>
             <Link to="/campers" onClick={closeSidebar}>
               Campers
             </Link>
           </div>
+        )}
+        {userRole === 'Admin' && (
           <div>
             <Link to="/administration" onClick={closeSidebar}>
               Administration
             </Link>
           </div>
-        </Offcanvas.Body>
+        )}
+      </Offcanvas.Body>
       </Offcanvas>
     </>
   );

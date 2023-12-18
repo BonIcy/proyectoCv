@@ -163,44 +163,56 @@ export default function SignIn() {
         setIsLoading(true);
         setProgress(0);
         try {
-            try{
-                const response = await axios.post('http://localhost:6929/cvs/SignIn/Register', data, {
-                    headers: {
-                        'content-Type': 'application/json',
-                        'Accept-Version': '1.1.0'
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        const progress = (progressEvent.loaded / progressEvent.total) * 100;
-                        setProgress(progress);
-                    }
-                });
-                switch (response.statusText) {
-                    case "OK":
-                        setOkRes(true);
-                        setTimeout(() => {
-                            setOkRes(false);
-                            console.log(response);
-                            AuthService.login(response.data.message);
-                            navigate.push("/home");
-                        }, 3000);
-                        break;
-                
-                    default:
-                        break;
-                }
-            }catch(error){
-                handleClickOpen();
-                let errorData = error.response.data;
-                let errorValidate = errorData.keyValue;
-                setTextError(error.response.data.message ? error.response.data.message : `The ${Object.keys(errorValidate)[0]}: ${errorValidate.Email} is already registered, try another one.`);
+          try {
+            const response = await axios.post(
+              'http://localhost:6929/cvs/SignIn/Register',
+              data,
+              {
+                headers: {
+                  'content-Type': 'application/json',
+                  'Accept-Version': '1.1.0',
+                },
+                onUploadProgress: (progressEvent) => {
+                  const progress =
+                    (progressEvent.loaded / progressEvent.total) * 100;
+                  setProgress(progress);
+                },
+              }
+            );
+            switch (response.statusText) {
+              case 'OK':
+                setOkRes(true);
+                setTimeout(() => {
+                  setOkRes(false);
+                  console.log(response);
+                  AuthService.login(
+                    response.data.message,
+                    response.data.rolsUser
+                  );
+                  navigate.push('/home');
+                }, 3000);
+                break;
+              default:
+                break;
             }
+          } catch (error) {
+            handleClickOpen();
+            let errorData = error.response.data;
+            let errorValidate = errorData.keyValue;
+            setTextError(
+              error.response.data.message
+                ? error.response.data.message
+                : `The ${Object.keys(errorValidate)[0]}: ${
+                    errorValidate.Email
+                  } is already registered, try another one.`
+            );
+          }
         } catch (error) {
           console.error(error);
         } finally {
-            setIsLoading(false);
+          setIsLoading(false);
         }
-    };
-    
+      };
     return (
         
         <ThemeProvider theme={defaultTheme}>
