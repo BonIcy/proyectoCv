@@ -9,6 +9,8 @@ import Campers from './components/campers/camperCards';
 import Sidebar from './components/sidebar/sidebar';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
+import RecoveryPassword from './components/RecoveryPassword/RecoveryPassword';
+import VerifyCode from './components/VerifyCode/VerifyCode';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/update" component={Update} /> 
           <Route path="/SignUp" component={SignUp} /> 
           <Route path="/SignIn" component={SignIn} /> 
+          <Route path="/RecoveryPassword" component={RecoveryPassword} /> 
+          <Route path="/VerifyCode" component={VerifyCode} /> 
         </Switch>
       </Router>
     </div>
