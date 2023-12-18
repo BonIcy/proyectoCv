@@ -8,6 +8,8 @@ import PostCamper from './components/campersManagment/postCampers';
 import UpdateCamper from './components/campersManagment/updateCamper';
 import Campers from './components/campers/camperCards';
 import Sidebar from './components/sidebar/sidebar';
+import SignUp from './components/SignUp/SignUp';
+import SignIn from './components/SignIn/SignIn';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/administration" component={Get} /> 
           <Route path="/postData" component={Post} /> 
           <Route path="/update" component={Update} /> 
+          <Route path="/SignUp" component={SignUp} /> 
+          <Route path="/SignIn" component={SignIn} /> 
         </Switch>
       </Router>
     </div>
