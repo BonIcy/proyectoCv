@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import { Button, Form, Select } from 'semantic-ui-react';
+
+import { useHistory, Link, useLocation,useParams } from "react-router-dom";
+import { Button, Form,Message, Select } from 'semantic-ui-react';
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
@@ -34,7 +35,9 @@ const PostCamper = () => {
   const [englishLevelOptions, setEnglishLevelOptions] = useState([]);
   const [TypeDocumentOptions, setTypeDocumentOptions] = useState([]);
   const [skillsOptions, setSkillsOptions] = useState([]);
-
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccessVisible, setIsSuccessVisible] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -116,12 +119,38 @@ const PostCamper = () => {
           formData.append(key, value);
         }
       });
-  
+      
       const response = await axios.post('http://localhost:6929/cvs/newCamper/add', formData);
-      console.log(response.data);
+
+      setSuccessMessage('Camper posted successfully!');
+      setErrorMessage('');
+      setIsSuccessVisible(true);
+      setCamperData({
+        Name: '',
+        LastName: '',
+        Email: '',
+        Phone: '',
+        identification: '',
+        Location: '',
+        Salary: '',
+        EnglishLevel: '',
+        Biography: '',
+        Skills: [],
+        Stacks: [],
+        Gender: '',
+        TypeDocument: '',
+        pdf: null,
+        Github: '',
+        LinkedIn: '',
+        PresentationVideo: '',
+      });
+  
+      setpdfData({ data: null });
       // history.push('/managmentCampers');
     } catch (error) {
       console.error('Error posting camper:', error.response);
+      setErrorMessage('Error posting camper. Please try again.');
+      setSuccessMessage('');
     }
   };
   
@@ -130,6 +159,11 @@ const PostCamper = () => {
   return (
     <div>
       <h2>Create New Camper</h2>
+      <div className="button-container">
+        <Link to="/managmentCampers">
+          <Button className="shadow2__btn">Back to Camper Administration</Button>
+        </Link>
+      </div>
       <form onSubmit={Sumbitt}>
       <label>Name:</label>
       <input type="text" name="Name" value={camperData.Name} onChange={(e) => camperChange(e, e.target)} required />
@@ -222,6 +256,18 @@ const PostCamper = () => {
         <input type="text" name="PresentationVideo" value={camperData.PresentationVideo} onChange={camperChange} />
         <button type="submit">Post Camper</button>
       </form>
+      {isSuccessVisible && (
+        <Message success>
+          <Message.Header>Success!</Message.Header>
+          <p>{successMessage}</p>
+        </Message>
+      )}
+      {errorMessage && (
+        <Message error>
+          <Message.Header>Error!</Message.Header>
+          <p>{errorMessage}</p>
+        </Message>
+        )}
     </div>
   );
 };

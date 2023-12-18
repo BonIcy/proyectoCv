@@ -75,7 +75,7 @@ const CampersList = () => {
     const isConfirmed = window.confirm('Are you sure you want to delete this camper?');
     if (isConfirmed) {
       try {
-        await axios.delete(`http://localhost:6929/cvs/del/Campers/${id}`);
+        await axios.delete(`http://localhost:6929/cvs/newCamper/del/${id}`);
         fetchData();
       } catch (error) {
         console.error('Error deleting camper:', error);

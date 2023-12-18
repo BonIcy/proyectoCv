@@ -62,7 +62,7 @@ const Update = () => {
     <div>
       <div className="button-container">
         <Link to="/administration">
-          <Button className="shadow2__btn">Volver</Button>
+          <Button className="shadow2__btn">Back to administration</Button>
         </Link>
       </div>
       <div className="center-content">

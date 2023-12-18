@@ -16,7 +16,7 @@ async function putCamper(camperData, CV, socialData, camperId) {
     try {
       const db = client.db(nombreBase);
       camperId = parseInt(camperId);
-      convertData(camperData);
+      convertData(camperData, cvData);
 
       camperData = { ...camperData, Working: false };
       await validateAndUpdate('Campers', db, '_id', camperId, camperData, session);
@@ -43,7 +43,7 @@ async function putCamper(camperData, CV, socialData, camperId) {
   }
 }
 
-async function convertData(camperData) {
+async function convertData(camperData, cvData) {
   const convertToNumber = (field) =>
   !isNaN(camperData[field]) ? Number(camperData[field]) : camperData[field];
   const convertToArray = (field) => {
@@ -60,6 +60,9 @@ async function convertData(camperData) {
   camperData['Stacks'] = camperData['Stacks'].map(element => element.trim());
   camperData['Skills'] = camperData['Skills'].map(skill => ({ _id: skill }));
   numericFields.forEach((field) => (camperData[field] = convertToNumber(field)));
+  const cvFile = fs.readFileSync(camperData['Pdf']);
+  cvData['Pdf'] = cvFile.toString('base64');
+  cvData['ContentType'] = 'application/pdf';
 }
 
 async function validateAndUpdate(collectionName, db, parameter, id, data, session) {

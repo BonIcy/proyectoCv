@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, Link, useLocation,useParams } from "react-router-dom";
 import { Button, Form, Select } from 'semantic-ui-react';
 
 const UpdateCamper = () => {
@@ -62,6 +62,7 @@ const fetchData = () => {
     if (foundCamper) {
       setCamperData({
         ...foundCamper,
+        pdf: foundCamper?.CV?.Pdf || null,
         Github: foundCamper?.SocialMedia?.Github || '',
         LinkedIn: foundCamper?.SocialMedia?.LinkedIn || '',
         PresentationVideo: foundCamper?.SocialMedia?.DriveVideo || '',
@@ -69,7 +70,7 @@ const fetchData = () => {
         TypeDocument: foundCamper?.TypeDocument || '',
       })
     } else {
-      console.error(`Camper with ID ${id} not found.`);
+      console.log(`The data from Camper with ID ${id} is loading...`);
     }
   } catch (error) {
     console.error(`Error fetching camper data for ID ${id}:`, error);
@@ -110,12 +111,8 @@ const fetchData = () => {
 
 
   const pdfChange = (e) => {
-    const { name, files } = e.target;
-    const file = files[0];
-    setPdfData((prevData) => ({
-      ...prevData,
-      pdf: file,
-    }));
+    const file = e.target.files[0];
+    setPdfData(file);
   };
 
   const submitUpdate = async (e) => {
@@ -123,7 +120,9 @@ const fetchData = () => {
   
     try {
       const formData = new FormData();
-      formData.append("pdf", pdfData.pdf);
+      if (pdfData !== null) {
+        formData.append("pdf", pdfData);
+      }
   
       const validProperties = ['pdf', 'Name', 'LastName', 'Email', 'Phone', 'identification', 'Location', 'Salary', 'EnglishLevel', 'Biography', 'Skills', 'Stacks', 'Gender', 'TypeDocument', 'Github', 'LinkedIn', 'PresentationVideo'];
   
@@ -148,7 +147,6 @@ const fetchData = () => {
       });
   
       const response = await axios.put(`http://localhost:6929/cvs/newCamper/upd/${id}`, formData);
-      console.log(response.data);
       history.push('/managmentCampers');
     } catch (error) {
       console.error('Error updating camper:', error.response);
@@ -157,6 +155,11 @@ const fetchData = () => {
   return (
     <div>
       <h2>Update Camper</h2>
+      <div className="button-container">
+        <Link to="/managmentCampers">
+          <Button className="shadow2__btn">Back to Camper Administration</Button>
+        </Link>
+      </div>
       <form onSubmit={submitUpdate}>
         <div>
           <label>Name:</label>
@@ -254,8 +257,13 @@ const fetchData = () => {
         </div>
 
         <div>
-          <label>PDF (PDF):</label>
+          <label>Cv (PDF):</label>
           <input type="file" name="pdf" accept=".pdf" onChange={pdfChange} />
+          {camperData.pdf && (
+            <a href={`data:application/pdf;base64,${camperData.pdf}`} target="_blank" rel="noopener noreferrer">
+              View PDF
+            </a>
+          )}
         </div>
 
         <div>
