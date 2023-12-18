@@ -102,7 +102,7 @@ const PostCamper = () => {
       Object.entries(camperData).forEach(([key, value]) => {
         if (key === 'SocialMedia') {
           Object.entries(value).forEach(([socialKey, socialValue]) => {
-            formData.append(`SocialMedia.${socialKey}`, socialValue);
+            formData.append(`Social_Network.${socialKey}`, socialValue);
           });
         } else if (key === 'Skills') {
           value.forEach((skill) => {
@@ -119,11 +119,10 @@ const PostCamper = () => {
   
       const response = await axios.post('http://localhost:6929/cvs/newCamper/add', formData);
       console.log(response.data);
-      // history.push('/campersList');
+      // history.push('/managmentCampers');
     } catch (error) {
       console.error('Error posting camper:', error.response);
     }
-    console.log("Contenido del input de PDF:", pdfData.pdf);
   };
   
 

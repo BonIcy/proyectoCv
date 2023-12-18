@@ -43,9 +43,9 @@ async function putCamper(camperData, CV, socialData, camperId) {
   }
 }
 
-
-async function convertData(camperData){
-  const convertToNumber = (field) => !isNaN(camperData[field]) ? Number(camperData[field]) : camperData[field];
+async function convertData(camperData) {
+  const convertToNumber = (field) =>
+  !isNaN(camperData[field]) ? Number(camperData[field]) : camperData[field];
   const convertToArray = (field) => {
     try {
       return JSON.parse(camperData[field]);
@@ -54,12 +54,12 @@ async function convertData(camperData){
       return camperData[field];
     }
   };
+
   const numericFields = ['Salary', 'EnglishLevel', 'Gender', 'TypeDocument', 'identification'];
-  const arrayFields = ['Skills', 'Stacks'];
 
-  numericFields.forEach(field => camperData[field] = convertToNumber(field));
-  arrayFields.forEach(field => camperData[field] = convertToArray(field));
-
+  camperData['Stacks'] = camperData['Stacks'].map(element => element.trim());
+  camperData['Skills'] = camperData['Skills'].map(skill => ({ _id: skill }));
+  numericFields.forEach((field) => (camperData[field] = convertToNumber(field)));
 }
 
 async function validateAndUpdate(collectionName, db, parameter, id, data, session) {
@@ -73,17 +73,24 @@ async function validateAndUpdate(collectionName, db, parameter, id, data, sessio
         documents: [data],
     });
 
-    if (!validationResult.valid) {
-        throw new Error(`Error validating document with ID ${numericId}`);
-    } else {
-        if (!validationResult2.valid) {
-            throw new Error(`Error validating document with ID ${numericId}`);
-        } else {
-            const result = await db.collection(collectionName).updateOne({ [parameter]: id }, { $set: data }, { session });
-            if (result.matchedCount === 0) {
-              throw new Error(`${collectionName} identificado con el Id ${id} no existe`);
-            }
+    async function validateAndUpdate(collectionName, db, parameter, id, data, session) {
+      try {
+        const validationResult = await db.command({
+          validate: collectionName,
+          documents: [data],
+        });
+    
+        if (!validationResult.valid) {
+          throw new Error(`Error validating document with ID ${id}: ${JSON.stringify(validationResult)}`);
         }
+        const result = await db.collection(collectionName).updateOne({ [parameter]: id }, { $set: data }, { session });
+    
+        if (result.matchedCount == 0) {
+          throw new Error(`${collectionName} identificado con el Id ${id} no existe`);
+        }
+      } catch (error) {
+        throw error;
+      }
     }
 }
 

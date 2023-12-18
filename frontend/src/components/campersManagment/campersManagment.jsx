@@ -32,7 +32,7 @@ const CampersList = () => {
 
         if (searchTerm !== "") {
           filters["$or"] = [
-            { Name: { $regex: searchTerm, $options: "i" } }, // Case-insensitive regex
+            { Name: { $regex: searchTerm, $options: "i" } }, 
             { LastName: { $regex: searchTerm, $options: "i" } },
           ];
         }
@@ -109,7 +109,7 @@ const CampersList = () => {
         />
       </Form.Field>
       <Card.Group>
-        {campers.map(camper => (
+        {campers.map((camper) => (
           <Card key={camper._id}>
             <Card.Content>
               <Card.Header>{`${camper.Name} ${camper.LastName}`}</Card.Header>
@@ -123,7 +123,7 @@ const CampersList = () => {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <div className="ui three buttons">
+              <div className="ui four buttons">
                 <Button color="blue" onClick={() => openModal(camper)}>
                   See Details
                 </Button>
@@ -133,6 +133,11 @@ const CampersList = () => {
                 <Button color="red" onClick={() => deleteData(camper._id)}>
                   Delete
                 </Button>
+                <Link to={`/updateCamper/${camper._id}`}>
+                  <Button color="yellow">
+                    Update
+                  </Button>
+                </Link>
               </div>
             </Card.Content>
           </Card>
