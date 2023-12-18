@@ -12,6 +12,9 @@ import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
 //import Home from './components/home/Home';
 import PrivateRoute from './components/auth/privateRoute';
+import RecoveryPassword from './components/RecoveryPassword/RecoveryPassword';
+import VerifyCode from './components/VerifyCode/VerifyCode';
+
 function App() {
   return (
     <div className="App">
@@ -28,7 +31,8 @@ function App() {
           <PrivateRoute path="/administration" component={Get} /> 
           <PrivateRoute path="/postData" component={Post} /> 
           <Route path="/update" component={Update} /> 
-
+          <Route path="/RecoveryPassword" component={RecoveryPassword} /> 
+          <Route path="/VerifyCode" component={VerifyCode} /> 
         </Switch>
       </Router>
     </div>
