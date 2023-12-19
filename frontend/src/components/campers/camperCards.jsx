@@ -11,9 +11,9 @@ import TerminalIcon from '@mui/icons-material/Terminal';
 import WcIcon from '@mui/icons-material/Wc';
 import TypeSpecimenIcon from '@mui/icons-material/TypeSpecimen';
 import Avatar from '@mui/material/Avatar';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import AddCommentIcon from '@mui/icons-material/AddComment';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -236,144 +236,63 @@ const Campers = () => {
           .map(camper => (
             <>
               <Grid item xs={4} sm={4} md={4} key={camper.Name}>
-              <div
-                className="card"
-                style={{   zIndex: '1', margin: '0 auto', backgroundColor: '#E4E4DB', borderRadius: '10px'}}
-              >
-                <div className="tools" style={{ display: 'flex', alignItems: 'center', padding: '9px' }}>
-                  <div className="circle" style={{ padding: '0 4px' }}>
-                    <span
-                      className="red box"
-                      style={{
-                        display: 'inline-block',
-                        alignItems: 'center',
-                        width: '10px',
-                        height: '10px',
-                        padding: '1px',
-                        borderRadius: '50%',
-                        backgroundColor: '#ff605c',
-                      }}
-                    ></span>
-                  </div>
-                  <div className="circle" style={{ padding: '0 4px' }}>
-                    <span
-                      className="yellow box"
-                      style={{
-                        display: 'inline-block',
-                        alignItems: 'center',
-                        width: '10px',
-                        height: '10px',
-                        padding: '1px',
-                        borderRadius: '50%',
-                        backgroundColor: '#ffbd44',
-                      }}
-                    ></span>
-                  </div>
-                  <div className="circle" style={{ padding: '0 4px' }}>
-                    <span
-                      className="green box"
-                      style={{
-                        display: 'inline-block',
-                        alignItems: 'center',
-                        width: '10px',
-                        height: '10px',
-                        padding: '1px',
-                        borderRadius: '50%',
-                        backgroundColor: '#00ca4e',
-                      }}
-                    ></span>
-                  </div>
-                </div>
-                <div className="card__content">
-                  <div style={{maxwidth: '100%'}}>
-                    <img style={{ display: 'flex', maxWidth: '300px', background: "url('https://i.ibb.co/PM60NdF/fondo2.png') center/contain no-repeat", height: 'auto', verticalAlign: 'middle', margin: '0 auto', padding: '50px',}} src={camper.Gender == "Female" ? 'https://i.ibb.co/hcVyYBB/man-in-space-2.png' : 'https://i.ibb.co/LP2yZzC/man-in-space-1.png'} alt="security"/>
-                  </div>
-                  <div key={camper._id} className="card" style={{ backgroundColor: '#E4E4DB', display: 'flex', alignItems: 'center',}}>
-                     
-                     
-                      <Typography component="h6" variant="h7"  sx={{display: 'flex',
-                      marginY: '10px',
-                      justifyContent: 'center', alignItems: 'center',
-                      opacity: 0.9,
-                      border: "2px solid #58BC8",
-                      display: "block",
-                      color: "#000087",
-                      fontFamily: "monospace",
-                      caretColor: "#b6003f",
-                      fontWeight: 700,
-                      fontSize: '30px',
-                      textAlign: "center"}}>
-                        
-                        <TerminalIcon  sx={{ bgcolor: '#000087', color: '#FFFFFF', borderRadius: '20%', marginRight: '10px' }}/>
-                        {`${camper.Name} ${camper.LastName}`}
-                      </Typography>
-                      <Typography component="h6" variant="h7"  sx={{display: 'flex',
-                      marginY: '10px',
-                      justifyContent: 'center', alignItems: 'center',
-                      opacity: 0.9,
-                      border: "2px solid #58BC8",
-                      display: "block",
-                      color: "#000000",
-                      fontFamily: "monospace",
-                      caretColor: "#b6003f",
-                      fontWeight: 700,
-                      fontSize: '20px',
-                      textAlign: "center"}}>
-                        
-                        <PinDropIcon  sx={{ bgcolor: '#000087', color: '#FFFFFF', borderRadius: '20%', marginRight: '10px' }}/>
-                        {camper.Location}
-                      </Typography>
-                      <Typography component="h6" variant="h7"  sx={{display: 'flex',
-                      marginY: '10px',
-                      justifyContent: 'center', alignItems: 'center',
-                      opacity: 0.9,
-                      border: "2px solid #58BC8",
-                      display: "block",
-                      color: "#000000",
-                      fontFamily: "monospace",
-                      caretColor: "#b6003f",
-                      fontWeight: 700,
-                      fontSize: '20px',
-                      textAlign: "center"}}>
-                        
-                        <AttachMoneyIcon  sx={{ bgcolor: '#000087', color: '#FFFFFF', borderRadius: '20%', marginRight: '10px' }}/>
-                        {camper.Salary}
-                      </Typography>
-                      <Typography component="h6" variant="h7"  sx={{display: 'flex',
-                      marginY: '10px',
-                      justifyContent: 'center', alignItems: 'center',
-                      opacity: 0.9,
-                      border: "2px solid #58BC8",
-                      display: "block",
-                      color: "#000000",
-                      fontFamily: "monospace",
-                      caretColor: "#b6003f",
-                      fontWeight: 700,
-                      fontSize: '20px',
-                      textAlign: "center"}}>
-                        
-                        <AddCommentIcon  sx={{ bgcolor: '#000087', color: '#FFFFFF', borderRadius: '20%', marginRight: '10px' }}/>
-                        {camper.EnglishLevel}
-                      </Typography>
-                      <div>
-                      <div class="cardS">
-                          <span class="title">Skills</span>
-                          <div class="card__tags">
-                            <ul class="tag">
-                              <li class="tag__name">JS</li>
-                              { camper.Skills.map((skill, index) => (
-                                <li className="tag__name" key={index}> {skill}</li>
-                              ))}
-                            </ul>
-                          </div>
+                <div className='cardCamer' style={{background: camper.Gender === "Male"
+                ? "url('https://i.ibb.co/tQ815sK/Cover-2.png') center/cover no-repeat"
+                : camper.Gender === "Female"
+                  ? "url('https://i.ibb.co/SyHfdD8/Cover-1.png') center/cover no-repeat"
+                  : "url('https://i.ibb.co/GnpKhT6/Cover-3.png') center/cover no-repeat"}}>
+                  <div className="content">
+                    <span></span>
+                    <div className='img'>
+                      <img src={camper.Gender === "Male" ?  'https://i.ibb.co/rHfYYfJ/camper-Logo-removebg-preview.png': camper.Gender === "Female" ?  'https://i.ibb.co/bs4H7hs/camper-WLogo-removebg-preview.png':'https://i.ibb.co/nQdGyJF/camper-BLogo-removebg-preview.png'} alt='Camper'/>
+                    </div>
+                    <h4 className='nameCamper'>{`${camper.Name} ${camper.LastName}`}</h4>
+                    <h6 className='location' 
+                    style={{ color: camper.Gender === "Male"
+                    ? "#3A539B"
+                    : camper.Gender === "Female"
+                      ? "#9B3A69"
+                      : "#797979"}}>{camper.Location}</h6>
+                    <p className='Info'>Salary <br></br>
+                      {camper.Salary}</p>
+                    <p className='Info'>English Level <br></br>
+                    {camper.EnglishLevel}</p>
+
+                    <div style={{ backgroundColor: camper.Gender === "Male"
+                    ? "#3A539B"
+                    : camper.Gender === "Female"
+                    ? "#9B3A69"
+                    : "#797979", paddingBlock: '20px'}}>
+                    <p className='Skills'>Skills</p>
+                    <ul class="tag">
+                        { camper.Skills.map((skill, index) => (
+                          <li className="tag__name" key={index}> {skill}</li>
+                        ))}
+                      </ul>
+                      <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '20px' }}>                
+                        {camper.SocialMedia.Github && (
+                          <a
+                            href={camper.SocialMedia.Github}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <GitHubIcon sx={{ width: 56, height: 56, color: '#ccc' }} />
+                          </a>
+                        )}
+                        <AddCircleIcon sx={{ width: 56, height: 56, color: '#ccc' }} onClick={() => openModal(camper)}/>
+                        {camper.SocialMedia.LinkedIn && (
+                          <a
+                            href={camper.SocialMedia.LinkedIn}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <LinkedInIcon sx={{ width: 56, height: 56, color: '#ccc' }} />
+                          </a>
+                        )}
                       </div>
                     </div>
-                      <Button onClick={() => openModal(camper)}>
-                        See Details
-                      </Button>
-                    </div>  
                   </div>
-              </div>
+                </div>
             </Grid>
             </>
           ))

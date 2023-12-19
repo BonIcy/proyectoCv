@@ -1,60 +1,88 @@
-.cardS {
-  width: 90%;
-  height: 200px;
-  margin: 30px;
-  background: #E8F4FD;
-  padding: 10px;
+.cardCamer {
+  position: relative;
+  max-width: 350px;
+  height: 650px;
   display: flex;
-  flex-wrap: wrap;
-  color: #000087;
-  border-radius: 15px;
-  box-shadow: -20px 20px 0px -5px #000087;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  box-shadow: 2px 3px 5px rgba(73, 69, 52, 0.4);
 }
-.card__tags {
-  overflow: auto;
-  height: 80%;
+.cardCamer .content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
 }
-.title {
-  font-weight: 900;
-  font-size: 1.7em;
+
+.cardCamer .content .img {
+  margin-bottom: 30px;
+}
+
+.cardCamer .content .img img {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.cardCamer .content .nameCamper {
+  font-family: 'Poppins', sans-serif; 
+  font-size: 25px;
+}
+
+.cardCamer .content .location {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 22px;
+}
+
+.cardCamer .content .Info {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 18px;
+}
+
+.cardCamer .content .Skills {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 18px;
+  color: #ccc;
+}
+
+.tag {
+  list-style: none;
+  padding: 0; 
+  margin: 0; 
+  overflow-y: auto; 
+  max-height: 80px;
 }
 
 .tag__name {
   display: inline-block;
-  color: #fff;
-  font-size: 1.1em;
-  background-color: #000087;
-  padding: 6px 23px 9px;
-  border-radius: 70em;
-  margin: 8px 6px 8px 0;
-  margin-left: 0px;
-  position: relative;
-  text-transform: lowercase;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
-.tag__name::before,
-.tag__name::after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 40%;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4e4eff;
-}
-
-.tag__name::before {
-  left: 7px;
-}
-
-.tag__name::after {
-  right: 7px;
-}
-
-.tag__name:hover {
-  transform: scale(1.1);
-  background-color: #51572c;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  color: #ccc;
+  border: 2px solid #ccc;
+  border-radius: 40px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
 }
