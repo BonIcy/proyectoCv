@@ -5,7 +5,11 @@ import CamperModal from '../campers/modal';
 import { Button, Form, Select, Dropdown, Card } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import Grid from '@mui/material/Grid';
 
 const CampersList = () => {
   const [campers, setCampers] = useState([]);
@@ -108,41 +112,61 @@ const CampersList = () => {
           onChange={searchChange}
         />
       </Form.Field>
-      <Card.Group>
+ 
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{padding: '20px'}}>
         {campers.map((camper) => (
-          <Card key={camper._id}>
-            <Card.Content>
-              <Card.Header>{`${camper.Name} ${camper.LastName}`}</Card.Header>
-              <Card.Meta>ID: {camper._id}</Card.Meta>
-              <Card.Description>
-                <p>Location: {camper.Location}</p>
-                <p>Salary: {camper.Salary}</p>
-                <p>English Level: {camper.EnglishLevel}</p>
-                <p>Skills: {camper.Skills.join(', ')}</p>
-                <p>Working: {camper.Working ? 'Yes' : 'No'}</p>
-              </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <div className="ui four buttons">
-                <Button color="blue" onClick={() => openModal(camper)}>
-                  See Details
-                </Button>
-                <Button color="green" onClick={() => changeStatus(camper._id)}>
-                  Change Status
-                </Button>
-                <Button color="red" onClick={() => deleteData(camper._id)}>
-                  Delete
-                </Button>
-                <Link to={`/updateCamper/${camper._id}`}>
-                  <Button color="yellow">
-                    Update
-                  </Button>
-                </Link>
-              </div>
-            </Card.Content>
-          </Card>
+           <>
+           <Grid item xs={4} sm={4} md={4} key={camper.Name}>
+             <div className='cardCamer' style={{background: camper.Gender === "Male"
+             ? "url('https://i.ibb.co/tQ815sK/Cover-2.png') center/cover no-repeat"
+             : camper.Gender === "Female"
+               ? "url('https://i.ibb.co/SyHfdD8/Cover-1.png') center/cover no-repeat"
+               : "url('https://i.ibb.co/GnpKhT6/Cover-3.png') center/cover no-repeat", height: '750px'}}>
+               <div className="content">
+                 <span></span>
+                 <div className='img'>
+                   <img src={camper.Gender === "Male" ?  'https://i.ibb.co/rHfYYfJ/camper-Logo-removebg-preview.png': camper.Gender === "Female" ?  'https://i.ibb.co/bs4H7hs/camper-WLogo-removebg-preview.png':'https://i.ibb.co/nQdGyJF/camper-BLogo-removebg-preview.png'} alt='Camper'/>
+                 </div>
+                 <h4 className='nameCamper'>{`${camper.Name} ${camper.LastName}`}</h4>
+                 <h6 className='location' 
+                 style={{ color: camper.Gender === "Male"
+                 ? "#3A539B"
+                 : camper.Gender === "Female"
+                   ? "#9B3A69"
+                   : "#797979"}}>{camper.Location}</h6>
+                 <p className='Info'>Salary <br></br>
+                   {camper.Salary}</p>
+                 <p className='Info'>English Level <br></br>
+                 {camper.EnglishLevel}</p>
+                 <p className='Info'>Working <br></br>
+                 {camper.Working ? 'Yes' : 'No'}</p>
+                 <div style={{ backgroundColor: camper.Gender === "Male"
+                 ? "#3A539B"
+                 : camper.Gender === "Female"
+                 ? "#9B3A69"
+                 : "#797979", paddingBlock: '20px'}}>
+                 <p className='Skills'>Skills</p>
+                 <ul class="tag">
+                     { camper.Skills.map((skill, index) => (
+                       <li className="tag__name" key={index}> {skill}</li>
+                     ))}
+                   </ul>
+                   <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '20px' }}>                
+                    <AddCircleIcon sx={{ width: 56, height: 56, color: '#ccc' }} onClick={() => openModal(camper)}/>
+                    <ChangeCircleIcon sx={{ width: 56, height: 56, color: '#ccc' }} onClick={() => changeStatus(camper._id)}/>
+                    <DeleteForeverIcon sx={{ width: 56, height: 56, color: '#ccc' }} onClick={() => deleteData(camper._id)}/> 
+                    <Link to={`/updateCamper/${camper._id}`}>
+                      <DriveFileRenameOutlineIcon sx={{ width: 56, height: 56, color: '#ccc' }}/>
+                    </Link>
+                   </div>
+                 </div>
+               </div>
+             </div>
+         </Grid>
+         </>
         ))}
-      </Card.Group>
+      </Grid>
+    
 
       <CamperModal show={showModal} onHide={closeModal} camper={selectedCamper} />
     </div>
