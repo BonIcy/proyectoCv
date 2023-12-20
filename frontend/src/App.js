@@ -29,7 +29,7 @@ function App() {
         <Switch>
           <Route path="/SignUp" component={SignUp} /> 
           <Route path="/SignIn" component={SignIn} /> 
-          <PrivateRoute path="/home" component={Campers} /> {/* aca ponga el home cuando lo termine mmgv */}
+          <PrivateRoute path="/campers" component={Campers} /> {/* aca ponga el home cuando lo termine mmgv */}
           <PrivateRoute path="/managmentCampers" 
           component={CampersList} 
           roles={['Admin']} />
