@@ -66,7 +66,7 @@ const Sidebar = ( ) => {
       </Box>
       <Offcanvas show={show} onHide={closeSidebar}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Uwu</Offcanvas.Title>
+          <Offcanvas.Title>Menu</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <hr />
