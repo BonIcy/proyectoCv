@@ -189,7 +189,7 @@ export default function SignIn() {
                     response.data.message,
                     response.data.rolsUser
                   );
-                  navigate.push('/home');
+                  navigate.push('/campers');
                 }, 3000);
                 break;
               default:
