@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory, Link, useLocation,useParams } from "react-router-dom";
 import { Button, Form, Select } from 'semantic-ui-react';
+import "./form.css"
 
 const UpdateCamper = () => {
   const { id } = useParams();
@@ -153,7 +154,7 @@ const fetchData = () => {
     }
   };
   return (
-    <div>
+    <div className="container">
       <h2>Update Camper</h2>
       <div className="button-container">
         <Link to="/managmentCampers">

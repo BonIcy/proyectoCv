@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { useHistory, Link, useLocation,useParams } from "react-router-dom";
 import { Button, Form,Message, Select } from 'semantic-ui-react';
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-
+import "./form.css"
 const PostCamper = () => {
   const [camperData, setCamperData] = useState({
     Name: '',
@@ -157,7 +156,7 @@ const PostCamper = () => {
 
 
   return (
-    <div>
+    <div className="container">
       <h2>Create New Camper</h2>
       <div className="button-container">
         <Link to="/managmentCampers">
