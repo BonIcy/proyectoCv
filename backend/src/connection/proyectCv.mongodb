@@ -1,0 +1,632 @@
+//🪙MongoDB Database Construction🪙
+
+use("proyectCv");
+
+//}🚧🔗 Creation of the autoincrementables management collection 🔗🚧
+
+use("proyectCv");
+db.createCollection("autoincrement");
+db.autoincrement.insertMany([
+    { _id: "Document_TypeId", sequence_value: 0 },
+    { _id: "GenderId", sequence_value: 0 },
+    { _id: "English_LevelsId", sequence_value: 0 },
+    { _id: "SkillsId", sequence_value: 0 },
+    { _id: "Data_UserId", sequence_value: 0 },
+    { _id: "CampersId", sequence_value: 0 },
+    { _id: "CVsId", sequence_value: 0 },
+    { _id: "Social_NetworkId", sequence_value: 0 },
+    { _id: "UserId", sequence_value: 0 },
+    { _id: "PasswordCodeId", sequence_value: 0 },
+    { _id: "Tokens_ApiId", sequence_value: 0 }
+]);
+
+
+//🚧⛩️ Creation of the document_type collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Document_Type", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "Name", "Abbreviation" ],
+            title: "Document_Type Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                Name: {
+                    bsonType: "string",
+                    description: "'Name' must contain letters and numbers but no special characters.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ '-]+$`,
+                    maxLength: 45
+                },
+                Abbreviation: {
+                    bsonType: "string",
+                    description: "'Abbreviation' must contain letters but no special characters or numbers.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 10
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+use("proyectCv");
+db.Document_Type.createIndex({ Name: 1 }, { unique: true });
+
+//🚧⛩️ Creation of the gender collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Gender", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "Name", "Abbreviation" ],
+            title: "gender Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                Name: {
+                    bsonType: "string",
+                    description: "'Name' must contain letters and numbers but no special characters.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ '-]+$`,
+                    maxLength: 45
+                },
+                Abbreviation: {
+                    bsonType: "string",
+                    description: "'Abbreviation' must contain letters but no special characters or numbers.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 10
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+use("proyectCv");
+db.Gender.createIndex({ Name: 1 }, { unique: true });
+
+//🚧⛩️ Creation of the English_Levels collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("English_Levels", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "E_Name", "E_Description"],
+            title: "English_Levels Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                E_Name: {
+                    bsonType: "string",
+                    description: "'E_Name' must contain letters and numbers but no special characters.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ '-]+$`,
+                    maxLength: 45
+                },
+                E_Description: {
+                    bsonType: "string",
+                    description: "'E_Description' must contain letters and numbers but no special characters.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 600
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+use("proyectCv");
+db.English_Levels.createIndex({ E_Name: 1 }, { unique: true });
+
+//🚧⛩️ Creation of the Skills collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Skills", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "S_Name", "S_Description"],
+            title: "Skills Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                S_Name: {
+                    bsonType: "string",
+                    description: "'S_Name' must contain letters and numbers but no special characters.",
+                    maxLength: 45
+                },
+                S_Description: {
+                    bsonType: "string",
+                    description: "'S_Description' must contain letters and numbers but no special characters.",  
+                    maxLength: 600
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+use("proyectCv");
+db.Skills.createIndex({ S_Name: 1 }, { unique: true });
+
+//🚧⛩️ Creation of the Data_User collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Data_User", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "UserId", "Company", "Address", "Phone", "Country", "City", "Description", "legalRep_Name", "legalRep_identificationNumber"],
+            title: "Data_User Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                UserId: {
+                    bsonType: "number",
+                    description: "'UserId' must be a positive number",
+                    minimum: 0
+                },
+                Company: {
+                    bsonType: "string",
+                    description: "'Company' must be a string.",  
+                    maxLength: 100
+                },
+                Address: {
+                    bsonType: "string",
+                    description: "'Address' must be a string.",
+                    maxLength: 255
+                },
+                Phone: {
+                    bsonType: "string",
+                    description: "'Phone' must be a string containing only numbers and starting with a phone prefix.",  
+                    pattern:  "^(\\+\\d{1,2}\\s?)?\\d{1,20}$",
+                    maxLength: 20,
+                },
+                Country: {
+                    bsonType: "string",
+                    description: "'Country' must contain letters and numbers but no special characters.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 60
+                },
+                City: {
+                    bsonType: "string",
+                    description: "'City' must contain letters and numbers but no special characters.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 60
+                },
+                Description: {
+                    bsonType: "string",
+                    description: "'Description' must contain letters and numbers but no special characters.",  
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 600
+                },
+                legalRep_Name: { 
+                    bsonType: "string" , 
+                    description: "'legalRep_Name' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 100
+                },
+                legalRep_identificationNumber: {
+                    bsonType: "number",
+                    description: "'legalRep_identificationNumber' must be a positive number",
+                    minimum: 0
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+//🚧⛩️ Creation of the Campers collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Campers", {
+    validator: {
+       $jsonSchema: {
+            bsonType: "object",
+            required: [ "_id", "Name", "LastName", "Email", "Phone", "identification", "Location", "Salary", "EnglishLevel", "Skills", "Biography", "Stacks", "Gender", "TypeDocument", "Working"],
+            title: "Campers Validation",
+            properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+                Name: { 
+                    bsonType: "string" , 
+                    description: "'Name' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 60
+                },
+                LastName: { 
+                    bsonType: "string" , 
+                    description: "'LastName' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 60
+                },
+                Email: { 
+                    bsonType: "string" , 
+                    pattern : "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+                    description: "'Email' must be an email of less than 255 characters",
+                    maxLength: 255
+                },
+                Phone: {
+                    bsonType: "string",
+                    description: "'Phone' must be a string containing only numbers and starting with a phone prefix.",  
+                    pattern:  "^(\\+\\d{1,2}\\s?)?\\d{1,20}$",
+                    maxLength: 20,
+                },
+                identification: {
+                    bsonType: "number",
+                    description: "'identification' must be a positive number",
+                    minimum: 0
+                },
+                Location: {
+                    bsonType: "string",
+                    description: "'Location' must be a string.",
+                    maxLength: 255
+                },
+                Salary: {
+                    bsonType: "number",
+                    description: "'Salary' must be a positive number",
+                    minimum: 0
+                },
+                EnglishLevel: {
+                    bsonType: "number",
+                    description: "'EnglishLevel' must be a positive number",
+                    minimum: 0
+                },
+                Skills: {
+                    bsonType: "array", 
+                    description: "'Skills' must be an array",
+                    items: {
+                        bsonType: "number",
+                        description: "'Skil' must be a positive number",
+                        minimum: 0
+                    }
+                },
+                Biography: {
+                    bsonType: "string",
+                    description: "'Biography' must contain letters and numbers but no special characters.",  
+                    maxLength: 600
+                },
+                Stacks: {
+                    bsonType: "array", 
+                    description: "'Stacks' must be an array",
+                    items: {
+                        bsonType: "string",
+                        description: "'Stack' must be a string.",
+                        maxLength: 255
+                    }
+                },
+                Gender: {
+                    bsonType: "number",
+                    description: "'Gender' must be a positive number",
+                    minimum: 0
+                },
+                TypeDocument: {
+                    bsonType: "number",
+                    description: "'TypeDocument' must be a positive number",
+                    minimum: 0
+                },
+                Working: {
+                    bsonType: "bool",
+                    description: "'Working' must be true or false"
+                }
+            },
+            additionalProperties: false
+         }
+     },
+     validationAction: "error",
+     validationLevel: "strict"
+});
+
+//indexes to avoid repeated identification and Email.
+use("proyectCv");
+db.Campers.createIndex({ identification: 1 }, { unique: true });
+db.Campers.createIndex({ Email: 1 }, { unique: true });
+
+//🚧⛩️ Creation of the CVs collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("CVs", {
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           required: [ 
+                "_id",
+                "CamperId",
+                "Name",
+                "Pdf",
+                "ContentType"
+            ],
+           title: "CVs Validation",
+           properties: {
+                _id: { 
+                    bsonType: "number" , 
+                    description: "'_id' must be a valid number.",
+                    minimum: 0
+                },
+
+                CamperId: { 
+                    bsonType: "number" , 
+                    description: "'camperId' must be a valid number.",
+                    minimum: 0
+                },
+
+                Name: { 
+                    bsonType: "string" , 
+                    description: "'name' must be a string type"
+                },
+
+                Pdf: { 
+                    bsonType: "binData" , 
+                    description: "PDF in binary",
+                    maxLength: 10485760 // 10mb 
+                },
+
+                ContentType: { 
+                    bsonType: "string" , 
+                    description: "Binary data content type",
+                    pattern: "^application/pdf$"
+                }
+           },
+           additionalProperties: false
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+});
+
+//🚧⛩️ Creation of the Social_Network collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("Social_Network", {
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           required: [ 
+                "_id",
+                "CamperId",
+                "Github",
+                "LinkedIn",
+                "DriveVideo"
+            ],
+           title: "Social_Network Validation",
+           properties: {
+                _id: { 
+                    bsonType: "number" , 
+                    description: "'_id' must be a valid number.",
+                    minimum: 0
+                },
+
+                CamperId: { 
+                    bsonType: "number" , 
+                    description: "'camperId' must be a valid number.",
+                    minimum: 0
+                },
+
+                Github: { 
+                    bsonType: "string",
+                    description: "'Github' must be a valid URL.",
+                    pattern: "^(https?|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w-.,@?^=%&:/~+#]*[\\w-@?^=%&/~+#])?$",
+                },
+
+                LinkedIn: { 
+                    bsonType: "string",
+                    description: "'LinkedIn' must be a valid URL.",
+                    pattern: "^(https?|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w-.,@?^=%&:/~+#]*[\\w-@?^=%&/~+#])?$",
+                },
+
+                DriveVideo: { 
+                    bsonType: "string",
+                    description: "'DriveVideo' must be a valid URL.",
+                    pattern: "^(https?|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w-.,@?^=%&:/~+#]*[\\w-@?^=%&/~+#])?$",
+                }
+           },
+           additionalProperties: false
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+});
+
+
+
+// ⚠️💻 collections for user management 💻⚠️
+
+//🚧👩‍💻 Creation of the User collection 👩‍💻🚧
+
+use("proyectCv");
+db.createCollection("User", {
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           required: [ 
+                "_id",
+                "Username",
+                "Role",
+                "Email",
+                "Password",
+                "CreatedAt"
+            ],
+           title: "Users Validation",
+           properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+
+                Username: { 
+                    bsonType: "string" , 
+                    description: "'Name' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 100
+                },
+
+                Role: { 
+                    bsonType: "string" , 
+                    description: "'Role' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 45
+                },
+
+                Email: { 
+                    bsonType: "string" , 
+                    pattern : "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+                    description: "'Email' must be an email of less than 255 characters",
+                    maxLength: 255
+                },
+
+                Password: { 
+                    bsonType: "string" , 
+                    description: "'Password' must be of type string.",
+                    maxLength: 255
+                },
+
+                CreatedAt: {
+                    bsonType: "date",
+                    description: "'createdAt' must be an Date",
+                }
+           },
+           additionalProperties: false
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+});
+
+//indexes to avoid repeated users and emails.
+use("proyectCv");
+db.User.createIndex({ Username: 1 }, { unique: true });
+db.User.createIndex({ Email: 1 }, { unique: true });
+
+
+//🚧⛩️ Creation of the PasswordCode collection ⛩️🚧
+
+use("proyectCv");
+db.createCollection("PasswordCode", {
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           required: [ 
+                "_id",
+                "Username",
+                "Email",
+                "CreatedAt",
+                "Recovery_Code"
+            ],
+           title: "passwordCode Validation",
+           properties: {
+                _id: {
+                    bsonType: "number",
+                    description: "'_id' must be a positive number",
+                    minimum: 0
+                },
+
+                Username: { 
+                    bsonType: "string" , 
+                    description: "'name' must be of type string with letters and numbers.",
+                    pattern: `^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.\s'"!?-]+$`,
+                    maxLength: 100
+                },
+
+                Email: { 
+                    bsonType: "string" , 
+                    pattern : "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+                    description: "'email' must be an email of less than 255 characters",
+                    maxLength: 255
+                },
+
+                CreatedAt: {
+                    bsonType: "date",
+                    description: "'createdAt' must be an Date",
+                },
+
+                Recovery_Code: { 
+                    bsonType: "string" , 
+                    description: "'recovery_Code' must be of type string of less than 5 characters",
+                    maxLength: 5
+                }
+           },
+           additionalProperties: false
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+});
+
+use("proyectCv");
+db.PasswordCode.createIndex({ Username: 1 }, { unique: true });
+db.PasswordCode.createIndex({ Email: 1 }, { unique: true });
+db.PasswordCode.createIndex({ CreatedAt: 1 }, { expireAfterSeconds: 360 })
+
+
+//🚧🎫 Creation of the Tokens_Api collection 🎫🚧
+
+use("proyectCv");
+db.createCollection("Tokens_Api", {
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           required: [ 
+                "_id",
+                "Id_User_Api",
+                "Token"
+            ],
+           title: "tokens_Api Validation",
+           properties: {
+                _id: { 
+                    bsonType: "objectId" , 
+                    description: "'_id' must be a valid ObjectId"
+                },
+
+                Id_User_Api: { 
+                    bsonType: "int" , 
+                    description: "'id_User' must be a valid int",
+                    minimum: 0
+                },
+
+                Token: { 
+                    bsonType: "string" , 
+                    description: "'token' must be of type string.",
+                }
+           },
+           additionalProperties: false
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict",
+});
+
+use("proyectCv");
+db.Tokens_Api.createIndex({ Id_User_Api: 1 }, { unique: true });
+db.Tokens_Api.createIndex({ Token: 1 }, { expireAfterSeconds: 7200  })
