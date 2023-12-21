@@ -141,16 +141,22 @@ const fetchData = () => {
             value.forEach((stack) => {
               formData.append('Stacks', stack);
             });
+          }else if (key === 'pdf') {
+            if (pdfData !== null) {
+              formData.append(key, pdfData);
+            }
           } else {
             formData.append(key, value);
           }
         }
       });
   
-      const response = await axios.put(`http://localhost:6929/cvs/newCamper/upd/${id}`, formData);
-      history.push('/managmentCampers');
-    } catch (error) {
-      console.error('Error updating camper:', error.response);
+     
+    const response = await axios.put(`http://localhost:6929/cvs/newCamper/upd/${id}`, formData);
+    history.push('/managmentCampers');
+    console.log(response);
+  } catch (error) {
+    console.error('Error updating camper:', error.response);
     }
   };
   return (

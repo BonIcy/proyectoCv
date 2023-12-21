@@ -140,14 +140,13 @@ const CampersList = () => {
       </Form.Field>
  
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{padding: '20px'}}>
-        {campers.map((camper) => (
-           <>
-           <Grid item xs={4} sm={4} md={4} key={camper.Name}>
-             <div className='cardCamer' style={{background: camper.Gender === "Male"
-             ? "url('https://i.ibb.co/tQ815sK/Cover-2.png') center/cover no-repeat"
-             : camper.Gender === "Female"
-               ? "url('https://i.ibb.co/SyHfdD8/Cover-1.png') center/cover no-repeat"
-               : "url('https://i.ibb.co/GnpKhT6/Cover-3.png') center/cover no-repeat", height: '750px'}}>
+  {campers.map((camper) => (
+    <Grid item xs={4} sm={4} md={4} key={camper.Name}>
+      <div className='cardCamer' style={{background: camper.Gender === "Male"
+        ? "url('https://i.ibb.co/tQ815sK/Cover-2.png') center/cover no-repeat"
+        : camper.Gender === "Female"
+          ? "url('https://i.ibb.co/SyHfdD8/Cover-1.png') center/cover no-repeat"
+          : "url('https://i.ibb.co/GnpKhT6/Cover-3.png') center/cover no-repeat", height: '750px'}}>
                <div className="content">
                  <span></span>
                  <div className='img'>
@@ -172,7 +171,7 @@ const CampersList = () => {
                  ? "#9B3A69"
                  : "#797979", paddingBlock: '20px'}}>
                  <p className='Skills'>Skills</p>
-                 <ul class="tag">
+                 <ul className="tag">
                      { camper.Skills.map((skill, index) => (
                        <li className="tag__name" key={index}> {skill}</li>
                      ))}
@@ -189,7 +188,6 @@ const CampersList = () => {
                </div>
              </div>
          </Grid>
-         </>
         ))}
       </Grid>
     
