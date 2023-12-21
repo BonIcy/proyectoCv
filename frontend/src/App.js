@@ -10,7 +10,6 @@ import Campers from './components/campers/camperCards';
 import Sidebar from './components/sidebar/sidebar';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
-//import Home from './components/home/Home';
 import PrivateRoute from './components/auth/privateRoute';
 import RecoveryPassword from './components/RecoveryPassword/RecoveryPassword';
 import VerifyCode from './components/VerifyCode/VerifyCode';
@@ -29,7 +28,7 @@ function App() {
         <Switch>
           <Route path="/SignUp" component={SignUp} /> 
           <Route path="/SignIn" component={SignIn} /> 
-          <PrivateRoute path="/campers" component={Campers} /> {/* aca ponga el home cuando lo termine mmgv */}
+          <PrivateRoute path="/campers" component={Campers} /> 
           <PrivateRoute path="/managmentCampers" 
           component={CampersList} 
           roles={['Admin']} />

@@ -16,7 +16,7 @@ async function putCamper(camperData, CV, socialData, camperId) {
     try {
       const db = client.db(nombreBase);
       camperId = parseInt(camperId);
-      convertData(camperData, cvData);
+      convertData(camperData);
 
       camperData = { ...camperData, Working: false };
       await validateAndUpdate('Campers', db, '_id', camperId, camperData, session);
@@ -43,26 +43,18 @@ async function putCamper(camperData, CV, socialData, camperId) {
   }
 }
 
-async function convertData(camperData, cvData) {
-  const convertToNumber = (field) =>
-  !isNaN(camperData[field]) ? Number(camperData[field]) : camperData[field];
-  const convertToArray = (field) => {
-    try {
-      return JSON.parse(camperData[field]);
-    } catch (error) {
-      console.error(`Error parsing field '${field}': ${error.message}`);
-      return camperData[field];
-    }
-  };
-
+async function convertData(camperData) {
   const numericFields = ['Salary', 'EnglishLevel', 'Gender', 'TypeDocument', 'identification'];
-
-  camperData['Stacks'] = camperData['Stacks'].map(element => element.trim());
-  camperData['Skills'] = camperData['Skills'].map(skill => ({ _id: skill }));
+  const convertToNumber = (field) =>
+    typeof camperData[field] === 'number' ? camperData[field] : Number(camperData[field]);
+  numericFields.forEach((field) => {
+    if (camperData[field] !== undefined) {
+      camperData[field] = convertToNumber(field);
+    }
+  });
+  camperData['Stacks'] = camperData['Stacks'].map((element) => element.trim());
+  camperData['Skills'] = camperData['Skills'].map((skill) => ({ _id: skill }));
   numericFields.forEach((field) => (camperData[field] = convertToNumber(field)));
-  const cvFile = fs.readFileSync(camperData['Pdf']);
-  cvData['Pdf'] = cvFile.toString('base64');
-  cvData['ContentType'] = 'application/pdf';
 }
 
 async function validateAndUpdate(collectionName, db, parameter, id, data, session) {
@@ -82,16 +74,19 @@ async function validateAndUpdate(collectionName, db, parameter, id, data, sessio
           validate: collectionName,
           documents: [data],
         });
-    
+      
         if (!validationResult.valid) {
-          throw new Error(`Error validating document with ID ${id}: ${JSON.stringify(validationResult)}`);
+          console.error(`Error validating document with ID ${id}: ${JSON.stringify(validationResult)}`);
+          throw new Error(`Error validating document with ID ${id}`);
         }
         const result = await db.collection(collectionName).updateOne({ [parameter]: id }, { $set: data }, { session });
-    
+      
         if (result.matchedCount == 0) {
+          console.error(`${collectionName} identificado con el Id ${id} no existe`);
           throw new Error(`${collectionName} identificado con el Id ${id} no existe`);
         }
       } catch (error) {
+        console.error(`Error in validateAndUpdate: ${error.message}`);
         throw error;
       }
     }
